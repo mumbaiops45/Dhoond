@@ -22,12 +22,12 @@ function StatusBadge({ status }) {
     return <span style={{ fontSize: 13, color: "#22c55e", fontWeight: 500 }}>Success</span>;
   }
   const map = {
-    Refunded: { bg: "#ef4444", color: "#fff" },
+    Refunded: { bg: "#fffff", color: "#ef4444" },
     Failed:   { bg: "#fee2e2", color: "#b91c1c" },
   };
   const s = map[status] || { bg: "#f1f5f9", color: "#64748b" };
   return (
-    <span style={{ display: "inline-block", fontSize: 12, fontWeight: 600, color: s.color, background: s.bg, padding: "3px 12px", borderRadius: 5 }}>
+    <span style={{ display: "inline-block", fontSize: 12, fontWeight: 500, color: s.color, background: s.bg,  borderRadius: 5 }}>
       {status}
     </span>
   );

@@ -18,7 +18,7 @@ const BASE_REFUNDS = [
 // ── STATUS BADGE ──────────────────────────────────────────────────────────────
 function StatusBadge({ status }) {
   if (status === "Pending")  return <span style={{ fontSize: 12, color: "#f59e0b", fontWeight: 500, border: "1px solid #fde68a", padding: "2px 10px", borderRadius: 4, background: "#fffbeb" }}>Pending</span>;
-  if (status === "Refunded") return <span style={{ fontSize: 12, fontWeight: 600, color: "#fff", background: "#22c55e", padding: "3px 12px", borderRadius: 5 }}>Refunded</span>;
+  if (status === "Refunded") return <span style={{ fontSize: 12, fontWeight: 600, color: "#22c55e", background: "#ffffff", padding: "3px 12px", borderRadius: 5 }}>Refunded</span>;
   return <span style={{ fontSize: 12, color: "#6b7280" }}>{status}</span>;
 }
 

@@ -16,9 +16,9 @@ const PENDING_PAYMENTS_DATA = [
 // ── STATUS BADGE ──────────────────────────────────────────────────────────────
 function StatusBadge({ status }) {
   if (status === "Pending") return <span style={{ fontSize: 13, color: "#f59e0b", fontWeight: 500 }}>Pending</span>;
-  if (status === "Success")  return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#fff", background: "#22c55e", padding: "3px 12px", borderRadius: 5 }}>Success</span>;
-  if (status === "Refunded") return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#fff", background: "#ef4444", padding: "3px 12px", borderRadius: 5 }}>Refunded</span>;
-  if (status === "Failed")   return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#b91c1c", background: "#fee2e2", padding: "3px 12px", borderRadius: 5 }}>Failed</span>;
+  if (status === "Success")  return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#22c55e", background: "#fffff",  borderRadius: 5 }}>Success</span>;
+  if (status === "Refunded") return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#22c55e", background: "#ffffff",  borderRadius: 5 }}>Refunded</span>;
+  if (status === "Failed")   return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#b91c1c", background: "#fee2e2",  borderRadius: 5 }}>Failed</span>;
   return <span style={{ fontSize: 13, color: "#6b7280" }}>{status}</span>;
 }
 
