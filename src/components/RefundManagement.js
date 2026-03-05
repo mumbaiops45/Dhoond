@@ -255,7 +255,7 @@ function RefundTable({ data, showPartnerCol, onView }) {
               {!showPartnerCol && <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{r.customer}</td>}
               <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{showPartnerCol ? r.partner : r.partner}</td>
               <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151", maxWidth: 130 }}>{r.service}</td>
-              <td style={{ padding: "12px 12px", fontSize: 13, fontWeight: 600, color: "#111", whiteSpace: "nowrap" }}>{r.refundAmount}</td>
+              <td style={{ padding: "12px 12px", color: "#111", whiteSpace: "nowrap" }}>{r.refundAmount}</td>
               <td style={{ padding: "12px 12px" }}><StatusBadge status={r.status} /></td>
               <td style={{ padding: "12px 12px", fontSize: 12, color: "#6b7280", maxWidth: 150 }}>{r.reason}</td>
               <td style={{ padding: "12px 12px" }}>
@@ -359,10 +359,9 @@ export default function RefundManagement() {
           ].map(tab => (
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
               style={{
-                padding: "9px 20px", background: "none", border: "none",
-                borderBottom: activeTab === tab.key ? "2px solid #111" : "2px solid transparent",
-                cursor: "pointer", fontSize: 13,
-                fontWeight: activeTab === tab.key ? 600 : 400,
+                padding: "9px 18px", background: "none", border: "none",
+                background: activeTab === tab.key ? "#ffffff" : "transparent",
+                cursor: "pointer",
                 color: activeTab === tab.key ? "#111" : "#6b7280",
                 marginBottom: -1, transition: "all 0.15s"
               }}>

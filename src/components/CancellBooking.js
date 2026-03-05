@@ -259,7 +259,7 @@ export default function CancelledBookings() {
                 <td style={{ padding: "13px 16px", fontSize: 13, color: "#6b7280" }}>{b.reason}</td>
                 <td style={{ padding: "13px 16px" }}>
                   <button
-                    onClick={() => handleView(b)}
+                    // onClick={() => handleView(b)}
                     style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
                   >
                     View

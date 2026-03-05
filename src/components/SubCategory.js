@@ -68,9 +68,9 @@ function Modal({ title, message, onCancel, onConfirm, confirmLabel, confirmDange
         <button onClick={onCancel} style={{ position: "absolute", top: 14, right: 16, background: "none", border: "none", fontSize: 18, color: "#9ca3af", cursor: "pointer" }}>×</button>
         <div style={{ fontWeight: 700, fontSize: 15, color: "#111", marginBottom: 8 }}>{title}</div>
         <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 22 }}>{message}</div>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-          <button onClick={onCancel} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 22px", fontSize: 13, cursor: "pointer", color: "#374151", fontWeight: 500 }}>Cancel</button>
-          <button onClick={onConfirm} style={{ background: confirmDanger ? "#ef4444" : "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>{confirmLabel}</button>
+        <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
+          <button onClick={onCancel} style={{ background: "#fff", border: "1px solid #000000", borderRadius: 7, padding: "8px 52px", fontSize: 13, cursor: "pointer", color: "#374151", fontWeight: 500 }}>Cancel</button>
+          <button onClick={onConfirm} style={{ background: confirmDanger ? "#ef4444" : "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 52px", cursor: "pointer" }}>{confirmLabel}</button>
         </div>
       </div>
     </div>
@@ -91,7 +91,7 @@ function SubCategoryList({ onView, onAdd }) {
   const paginated = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: "26px 28px", fontFamily: "'DM Sans','Segoe UI',sans-serif" }}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: "26px 28px" }}>
 
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
@@ -101,7 +101,7 @@ function SubCategoryList({ onView, onAdd }) {
             All
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
           </div>
-          <button onClick={onAdd} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+          <button onClick={onAdd} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
             Add Sub-Category
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
           </button>
@@ -112,8 +112,8 @@ function SubCategoryList({ onView, onAdd }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 16 }}>
         {[
           { label: "Total Categories", value: "33" },
-          { label: "Total Profession",  value: "453" },
-          { label: "Total Services",    value: "3230" },
+          { label: "Total Profession", value: "453" },
+          { label: "Total Services", value: "3230" },
         ].map(c => (
           <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 22px" }}>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{c.label}</div>
@@ -124,13 +124,13 @@ function SubCategoryList({ onView, onAdd }) {
 
       {/* Filters */}
       <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "16px 20px", marginBottom: 16 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 14 }}>Filters</div>
+        <div style={{ color: "#374151", marginBottom: 14 }}>Filters</div>
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
           {[
-            { label: "State",          val: "Karnataka" },
-            { label: "City",           val: "Bengaluru" },
-            { label: "Category",       val: "All" },
-            { label: "Sub-Category",   val: "All" },
+            { label: "State", val: "Karnataka" },
+            { label: "City", val: "Bengaluru" },
+            { label: "Category", val: "All" },
+            { label: "Sub-Category", val: "All" },
             { label: "Partner Status", val: "All" },
           ].map(f => (
             <div key={f.label}>
@@ -160,7 +160,7 @@ function SubCategoryList({ onView, onAdd }) {
               Status (All)
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
             </div>
-            <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Filter</button>
+            <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", cursor: "pointer" }}>Filter</button>
           </div>
         </div>
 
@@ -185,7 +185,7 @@ function SubCategoryList({ onView, onAdd }) {
                 <td style={{ padding: "12px 14px", color: "#374151" }}>{row.activePartners}</td>
                 <td style={{ padding: "12px 14px" }}><StatusBadge status={row.status} /></td>
                 <td style={{ padding: "12px 14px" }}>
-                  <button onClick={() => onView(row)} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>View</button>
+                  <button onClick={() => onView(row)} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", cursor: "pointer" }}>View</button>
                 </td>
               </tr>
             ))}
@@ -216,24 +216,24 @@ function SubCategoryDetail({ onBack, onEdit }) {
   const d = SUBCATEGORY_DETAIL;
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: "26px 28px"}}>
-      <h1 style={{ margin: "0 0 4px", fontSize: 22, fontWeight: 700, color: "#111" }}>Sub-Category Details</h1>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: "26px 28px" }}>
+      <h1 style={{ margin: "0 0 4px", color: "#111" }}>Sub-Category Details</h1>
       <Breadcrumb items={["Admin", "Sub-Category", "Plumber"]} />
 
       <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
 
         {/* Left Card */}
-        <div style={{ width: 240, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: 20, flexShrink: 0 }}>
+        <div style={{ width: 280, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: 20, flexShrink: 0 }}>
           <div style={{ width: "100%", height: 140, background: "#f3f4f6", borderRadius: 8, marginBottom: 14 }} />
           <div style={{ fontWeight: 700, fontSize: 15, color: "#111", marginBottom: 14 }}>{d.name}</div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
-            <div style={{ background: "#f9fafb", borderRadius: 8, padding: "10px 12px" }}>
+            <div style={{ background: "#E6E6E6", borderRadius: 8, padding: "10px 12px" }}>
               <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 3 }}>Total Bookings</div>
               <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>{d.totalBookings}</div>
               <div style={{ fontSize: 10, color: "#9ca3af" }}>Avg. rating : {d.avgRating}</div>
             </div>
-            <div style={{ background: "#f9fafb", borderRadius: 8, padding: "10px 12px" }}>
+            <div style={{ background: "#E6E6E6", borderRadius: 8, padding: "10px 12px" }}>
               <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 3 }}>Total Earned</div>
               <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>{d.totalEarned}</div>
               <div style={{ fontSize: 10, color: "#9ca3af" }}>Lifetime</div>
@@ -241,7 +241,7 @@ function SubCategoryDetail({ onBack, onEdit }) {
           </div>
 
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={onEdit} style={{ flex: 1, background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Edit Sub-Category</button>
+            <button onClick={onEdit} style={{ flex: 1, background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", cursor: "pointer" }}>Edit Sub-Category</button>
             <button style={{ background: "#fff", color: "#374151", border: "1px solid #e5e7eb", borderRadius: 7, padding: "9px 12px", fontSize: 13, cursor: "pointer" }}>Deactivate</button>
           </div>
         </div>
@@ -265,11 +265,11 @@ function SubCategoryDetail({ onBack, onEdit }) {
             <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 24px" }}>
               <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 18 }}>Overview</div>
               {[
-                { label: "Category",       val: d.category },
-                { label: "Sub-Category",   val: d.subCategory },
+                { label: "Category", val: d.category },
+                { label: "Sub-Category", val: d.subCategory },
                 { label: "Total Partners", val: d.totalPartners },
-                { label: "Status",         val: d.status, green: true },
-                { label: "Created On",     val: d.createdOn },
+                { label: "Status", val: d.status, green: true },
+                { label: "Created On", val: d.createdOn },
               ].map(row => (
                 <div key={row.label} style={{ display: "flex", padding: "12px 0", borderBottom: "1px solid #f9fafb", gap: 16 }}>
                   <div style={{ width: 140, fontSize: 13, color: "#9ca3af", flexShrink: 0 }}>{row.label}</div>
@@ -283,10 +283,10 @@ function SubCategoryDetail({ onBack, onEdit }) {
             <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 24px" }}>
               <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 18 }}>Pricing & Analytics</div>
               {[
-                { label: "Total Bookings",   val: d.pricing.totalBookings },
-                { label: "Conversion Rate",  val: d.pricing.conversionRate },
-                { label: "Cancel Rate",      val: d.pricing.cancelRate },
-                { label: "Revenue",          val: d.pricing.revenue },
+                { label: "Total Bookings", val: d.pricing.totalBookings },
+                { label: "Conversion Rate", val: d.pricing.conversionRate },
+                { label: "Cancel Rate", val: d.pricing.cancelRate },
+                { label: "Revenue", val: d.pricing.revenue },
               ].map(row => (
                 <div key={row.label} style={{ display: "flex", padding: "12px 0", borderBottom: "1px solid #f9fafb", gap: 16 }}>
                   <div style={{ width: 160, fontSize: 13, color: "#9ca3af", flexShrink: 0 }}>{row.label}</div>
@@ -372,19 +372,23 @@ function SubCategoryForm({ isEdit, onBack }) {
                 rows={5}
                 style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 12px", fontSize: 13, color: "#374151", outline: "none", background: "#fafafa", resize: "vertical", boxSizing: "border-box" }}
               />
-              <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
-                {["B", "I", "🔗", "≡"].map(t => (
-                  <button key={t} style={{ background: "none", border: "none", fontSize: 13, color: "#9ca3af", cursor: "pointer", padding: "2px 4px" }}>{t}</button>
-                ))}
+              <div className="flex justify-between">
+                <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>142 Characters left</div>
+                <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+                  {["B", "I", "🔗", "≡"].map(t => (
+                    <button key={t} style={{ background: "none", border: "none", fontSize: 13, color: "#9ca3af", cursor: "pointer", padding: "2px 4px" }}>{t}</button>
+                  ))}
+                </div>
+
               </div>
-              <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>142 Characters left</div>
+
             </div>
           </div>
 
           {/* Action Buttons */}
           <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
             <button onClick={() => setShowDeleteModal(true)} style={{ background: "#fff", color: "#374151", border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 22px", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>Delete</button>
-            <button onClick={() => isEdit ? setShowUpdateModal(true) : null} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            <button onClick={() => isEdit ? setShowUpdateModal(true) : null} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 22px", cursor: "pointer" }}>
               {isEdit ? "Update Sub-Category" : "Add Sub-Category"}
             </button>
           </div>
@@ -418,12 +422,12 @@ function SubCategoryForm({ isEdit, onBack }) {
             <div style={{ display: "flex", gap: 8 }}>
               <button style={{ flex: 1, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 0", fontSize: 12, color: "#374151", cursor: "pointer" }}>Delete</button>
               {isEdit
-                ? <button style={{ flex: 1, background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 0", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Edit</button>
-                : <button style={{ width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", fontSize: 13, fontWeight: 600, cursor: "pointer", marginTop: 4 }}>Upload</button>
+                ? <button style={{ flex: 1, background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 0", cursor: "pointer" }}>Edit</button>
+                : <button style={{ width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", cursor: "pointer", marginTop: 4 }}>Upload</button>
               }
             </div>
             {!isEdit && (
-              <button style={{ width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", fontSize: 13, fontWeight: 600, cursor: "pointer", marginTop: 8 }}>Upload</button>
+              <button style={{ width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", cursor: "pointer", marginTop: 8 }}>Upload</button>
             )}
           </div>
         </div>
@@ -461,8 +465,8 @@ export default function SubCategory() {
   const [screen, setScreen] = useState("list"); // list | detail | add | edit
 
   if (screen === "detail") return <SubCategoryDetail onBack={() => setScreen("list")} onEdit={() => setScreen("edit")} />;
-  if (screen === "add")    return <SubCategoryForm isEdit={false} onBack={() => setScreen("list")} />;
-  if (screen === "edit")   return <SubCategoryForm isEdit={true}  onBack={() => setScreen("detail")} />;
+  if (screen === "add") return <SubCategoryForm isEdit={false} onBack={() => setScreen("list")} />;
+  if (screen === "edit") return <SubCategoryForm isEdit={true} onBack={() => setScreen("detail")} />;
 
   return <SubCategoryList onView={() => setScreen("detail")} onAdd={() => setScreen("add")} />;
 }

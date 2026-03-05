@@ -290,10 +290,10 @@ export default function OngoingBookings() {
                 <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.service}</td>
                 <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", whiteSpace: "nowrap" }}>{b.date}</td>
                 <td style={{ padding: "13px 16px" }}><PaymentBadge status={b.payment} /></td>
-                <td style={{ padding: "13px 16px", fontSize: 13, fontWeight: 600, color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
+                <td style={{ padding: "13px 16px",color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
                 <td style={{ padding: "13px 16px" }}>
                   <button
-                    onClick={() => handleView(b)}
+                    // onClick={() => handleView(b)}
                     style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
                   >
                     View

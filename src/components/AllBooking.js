@@ -138,28 +138,68 @@ function OrderBadge({ status }) {
 
 function PaymentBadge({ status }) {
   const styles = {
-    "Paid":     { color: "#16a34a", bg: "#dcfce7", padding: "3px 12px", borderRadius: 5, fontWeight: 600 },
-    "Pending":  { color: "#f59e0b", bg: "#fef9c3", padding: "3px 10px", borderRadius: 5, fontWeight: 500 },
-    "Refunded": { color: "#a16207", bg: "#fef9c3", padding: "3px 12px", borderRadius: 5, fontWeight: 600 },
+    "Paid":     { color: "#ffffff", bg: "#61DF41", padding: "3px 12px", borderRadius: 5},
+    "Pending":  { color: "#000000", bg: "#F2F6FF", padding: "3px 10px", borderRadius: 5},
+    "Refunded": { color: "#ffffff", bg: "#fef9c3", padding: "3px 12px", borderRadius: 5},
   };
   const s = styles[status] || styles["Pending"];
   return (
-    <span style={{ display: "inline-block", fontSize: 12, color: s.color, background: s.bg, padding: s.padding, borderRadius: s.borderRadius, fontWeight: s.fontWeight }}>
+    <span style={{ display: "inline-block",textAlign:"center", fontSize: 12, color: s.color, background: s.bg, padding: s.padding, borderRadius: s.borderRadius, width:"100%" }}>
       {status}
     </span>
   );
 }
 
 // ── LABEL / VALUE ROW ─────────────────────────────────────────────────────────
-function Row({ label, value, valueEl }) {
+function Row({ label, value, valueEl, alignLeft = false }) { // alignLeft defaults to false
+  
+  // Style for the main container (using conditional logic)
+  const containerStyle = {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: 10, // vertical spacing between rows
+    
+    // --- CONDITIONAL ALIGNMENT ---
+    ...(alignLeft ? {
+        // IF alignLeft IS TRUE (e.g., Payment Status)
+        justifyContent: "flex-start", // align everything to the left
+         // space between text and badge
+    } : {
+        // IF alignLeft IS FALSE (e.g., standard layout)
+        justifyContent: "space-between", // push value to the far right
+    }),
+  };
+
+  // Wrapper for the value/badge (text or order badge)
+  const valueWrapperStyle = {
+    fontSize: 13,
+    fontWeight: 500,
+    color: "#111", // default value color
+  };
+
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "5px 0" }}>
-      <span style={{ fontSize: 12, color: "#9ca3af", minWidth: 110, flexShrink: 0 }}>{label}:</span>
-      {valueEl || <span style={{ fontSize: 13, color: "#111", fontWeight: 500, textAlign: "right" }}>{value}</span>}
+    <div style={containerStyle}>
+      
+      {/* Label section - color is usually gray */}
+      <div style={{
+        color: "#6b7280",
+        fontSize: 13,
+        width:"30%"
+      }}>
+        {label}:
+      </div>
+
+      {/* Value section (Text or Badge) */}
+      <div style={valueWrapperStyle}>
+        {valueEl ? (
+          valueEl // render a badge (like the pending badge)
+        ) : (
+          value   // render plain text (like the ID)
+        )}
+      </div>
     </div>
   );
 }
-
 // ── CARD ──────────────────────────────────────────────────────────────────────
 function Card({ title, children, style }) {
   return (
@@ -194,19 +234,19 @@ function BookingDetailPage({ booking, onBack }) {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
           {/* Booking Summary */}
-          <Card title="Booking Summary">
-            <Row label="Booking ID"     value={booking.id} />
-            <Row label="Date"           value={booking.date} />
-            <Row label="Status"         valueEl={<OrderBadge status={booking.orderStatus} />} />
-            <Row label="Payment Status" valueEl={<PaymentBadge status={booking.payment} />} />
+          <Card title="Booking Summary " >
+            <Row alignLeft={true} label="Booking ID"     value={booking.id} />
+            <Row alignLeft={true} label="Date"           value={booking.date} />
+            <Row alignLeft={true} label="Status"         valueEl={<OrderBadge status={booking.orderStatus} />} />
+            <Row alignLeft={true} label="Payment Status" valueEl={<PaymentBadge status={booking.payment} />} />
           </Card>
 
           {/* Service Details */}
           <Card title="Service Details">
-            <Row label="Category"    value={booking.serviceCategory} />
-            <Row label="Service"     value={booking.serviceName} />
-            <Row label="Description" value={booking.serviceDescription} />
-            <Row label="Duration"    value={booking.serviceDuration} />
+            <Row alignLeft={true} label="Category"    value={booking.serviceCategory} />
+            <Row alignLeft={true} label="Service"     value={booking.serviceName} />
+            <Row alignLeft={true} label="Description" value={booking.serviceDescription} />
+            <Row alignLeft={true} label="Duration"    value={booking.serviceDuration} />
           </Card>
 
           {/* Booking Timeline */}
@@ -230,17 +270,17 @@ function BookingDetailPage({ booking, onBack }) {
 
           {/* Customer Details */}
           <Card title="Customer Details">
-            <Row label="Name"    value={booking.customer} />
-            <Row label="Phone"   value={booking.customerPhone} />
-            <Row label="Address" value={booking.customerAddress} />
+            <Row alignLeft={true} label="Name"    value={booking.customer} />
+            <Row alignLeft={true} label="Phone"   value={booking.customerPhone} />
+            <Row alignLeft={true} label="Address" value={booking.customerAddress} />
           </Card>
 
           {/* Partner Details */}
           <Card title="Partner Details">
-            <Row label="Name"       value={booking.partner} />
-            <Row label="Phone"      value={booking.partnerPhone} />
-            <Row label="Profession" value={booking.partnerProfession} />
-            <Row label="Experience" value={booking.partnerExperience} />
+            <Row alignLeft={true} label="Name"       value={booking.partner} />
+            <Row alignLeft={true} label="Phone"      value={booking.partnerPhone} />
+            <Row alignLeft={true} label="Profession" value={booking.partnerProfession} />
+            <Row alignLeft={true} label="Experience" value={booking.partnerExperience} />
           </Card>
 
           {/* Payment Breakdown */}
@@ -316,7 +356,7 @@ export default function AllBookings() {
       </div>
 
       {/* Stat cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 22 }}>
+      <div className="grid md:grid-cols-3 grid-cols-1" style={{ gap: 14, marginBottom: 22 }}>
         {[
           { label: "Total Bookings",     value: "33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 4 }}>↑37%</span> },
           { label: "Completed Bookings", value: "33,253", extra: null },
@@ -421,7 +461,7 @@ export default function AllBookings() {
                 <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", whiteSpace: "nowrap" }}>{b.date}</td>
                 <td style={{ padding: "13px 16px" }}><OrderBadge status={b.orderStatus} /></td>
                 <td style={{ padding: "13px 16px" }}><PaymentBadge status={b.payment} /></td>
-                <td style={{ padding: "13px 16px", fontSize: 13, fontWeight: 600, color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
+                <td style={{ padding: "13px 16px", color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
                 <td style={{ padding: "13px 16px" }}>
                   <button
                     onClick={() => handleView(b)}

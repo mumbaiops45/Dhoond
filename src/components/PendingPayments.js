@@ -221,7 +221,7 @@ export default function PendingPayments() {
                 <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.customer}</td>
                 <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.partner}</td>
                 <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", maxWidth: 160 }}>{t.service}</td>
-                <td style={{ padding: "13px 14px", fontSize: 13, fontWeight: 600, color: "#111", whiteSpace: "nowrap" }}>{t.amount}</td>
+                <td style={{ padding: "13px 14px",color: "#111", whiteSpace: "nowrap" }}>{t.amount}</td>
                 <td style={{ padding: "13px 14px" }}><StatusBadge status={t.status} /></td>
                 <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.method}</td>
                 <td style={{ padding: "13px 14px" }}>
