@@ -1,30 +1,41 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+// ── RESPONSIVE HOOK ───────────────────────────────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const PENDING_PAYMENTS_DATA = [
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter - Furniture Repair", amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-123456", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-234567", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-345678", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Refunded", method: "UPI", paymentRef: "UPI REF-456789", serviceAmount: "₹1,200", commission: "₹0",   taxes: "₹0",   partnerPayout: "₹0"   },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-567890", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-678901", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-789012", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-890123", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter - Furniture Repair", amount: "₹1,200", status: "Pending", method: "UPI", paymentRef: "UPI REF-123456", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter", amount: "₹1,200", status: "Success", method: "UPI", paymentRef: "UPI REF-234567", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter", amount: "₹1,200", status: "Success", method: "UPI", paymentRef: "UPI REF-345678", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter", amount: "₹1,200", status: "Refunded", method: "UPI", paymentRef: "UPI REF-456789", serviceAmount: "₹1,200", commission: "₹0", taxes: "₹0", partnerPayout: "₹0" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter", amount: "₹1,200", status: "Success", method: "UPI", paymentRef: "UPI REF-567890", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter", amount: "₹1,200", status: "Pending", method: "UPI", paymentRef: "UPI REF-678901", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter", amount: "₹1,200", status: "Pending", method: "UPI", paymentRef: "UPI REF-789012", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter", amount: "₹1,200", status: "Pending", method: "UPI", paymentRef: "UPI REF-890123", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
 ];
 
 // ── STATUS BADGE ──────────────────────────────────────────────────────────────
 function StatusBadge({ status }) {
   if (status === "Pending") return <span style={{ fontSize: 13, color: "#f59e0b", fontWeight: 500 }}>Pending</span>;
-  if (status === "Success")  return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#22c55e", background: "#fffff",  borderRadius: 5 }}>Success</span>;
-  if (status === "Refunded") return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#22c55e", background: "#ffffff",  borderRadius: 5 }}>Refunded</span>;
-  if (status === "Failed")   return <span style={{ display:"inline-block", fontSize: 12, fontWeight: 600, color: "#b91c1c", background: "#fee2e2",  borderRadius: 5 }}>Failed</span>;
+  if (status === "Success") return <span style={{ display: "inline-block", fontSize: 12, fontWeight: 600, color: "#22c55e", background: "#fffff", borderRadius: 5 }}>Success</span>;
+  if (status === "Refunded") return <span style={{ display: "inline-block", fontSize: 12, fontWeight: 600, color: "#22c55e", background: "#ffffff", borderRadius: 5 }}>Refunded</span>;
+  if (status === "Failed") return <span style={{ display: "inline-block", fontSize: 12, fontWeight: 600, color: "#b91c1c", background: "#fee2e2", borderRadius: 5 }}>Failed</span>;
   return <span style={{ fontSize: 13, color: "#6b7280" }}>{status}</span>;
 }
 
 // ── DETAIL PAGE ───────────────────────────────────────────────────────────────
 function TransactionDetailPage({ txn, onBack }) {
-  const [markedPaid, setMarkedPaid]     = useState(false);
+  const [markedPaid, setMarkedPaid] = useState(false);
   const [refundIssued, setRefundIssued] = useState(false);
 
   const InfoRow = ({ label, value, blue, bold }) => (
@@ -35,7 +46,7 @@ function TransactionDetailPage({ txn, onBack }) {
   );
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "26px 30px"}}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "26px 30px" }}>
       <h1 style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 700, color: "#111" }}>
         Transaction Details - {txn.id}
       </h1>
@@ -52,11 +63,11 @@ function TransactionDetailPage({ txn, onBack }) {
           <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
             <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 10 }}>Booking Information</div>
             <div style={{ height: 1, background: "#f3f4f6", marginBottom: 4 }} />
-            <InfoRow label="Date & Time:"    value={txn.datetime} />
+            <InfoRow label="Date & Time:" value={txn.datetime} />
             <InfoRow label="Transaction ID:" value={txn.id} />
-            <InfoRow label="Customer:"       value={txn.customer} />
-            <InfoRow label="Partner:"        value={txn.partner} />
-            <InfoRow label="Service:"        value={txn.service} />
+            <InfoRow label="Customer:" value={txn.customer} />
+            <InfoRow label="Partner:" value={txn.partner} />
+            <InfoRow label="Service:" value={txn.service} />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0" }}>
               <span style={{ fontSize: 13, color: "#6b7280" }}>Status:</span>
               <StatusBadge status={txn.status} />
@@ -80,12 +91,12 @@ function TransactionDetailPage({ txn, onBack }) {
         <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
           <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 10 }}>Payment Details</div>
           <div style={{ height: 1, background: "#f3f4f6", marginBottom: 4 }} />
-          <InfoRow label="Payment Method"          value={txn.method} />
-          <InfoRow label="Payment Reference"       value={txn.paymentRef} blue />
+          <InfoRow label="Payment Method" value={txn.method} />
+          <InfoRow label="Payment Reference" value={txn.paymentRef} blue />
           <div style={{ height: 8 }} />
-          <InfoRow label="Service Amount:"         value={txn.serviceAmount} />
+          <InfoRow label="Service Amount:" value={txn.serviceAmount} />
           <InfoRow label="Platform Commission (20%):" value={txn.commission} />
-          <InfoRow label="Taxes (GST 18%):"        value={txn.taxes} />
+          <InfoRow label="Taxes (GST 18%):" value={txn.taxes} />
           <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0 4px" }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#111" }}>Partner Payout:</span>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#111" }}>{txn.partnerPayout}</span>
@@ -98,14 +109,15 @@ function TransactionDetailPage({ txn, onBack }) {
 
 // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export default function PendingPayments() {
-  const [search, setSearch]             = useState("");
+  const isMobile = useIsMobile();
+  const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [selectedTxn, setSelectedTxn]   = useState(null);
-  const [rowsPerPage, setRowsPerPage]   = useState(10);
-  const [page, setPage]                 = useState(1);
+  const [selectedTxn, setSelectedTxn] = useState(null);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(1);
 
   const handleView = (t) => setSelectedTxn(t);
-  const handleBack = ()  => setSelectedTxn(null);
+  const handleBack = () => setSelectedTxn(null);
 
   const filtered = PENDING_PAYMENTS_DATA.filter(t => {
     const q = search.toLowerCase();
@@ -115,16 +127,16 @@ export default function PendingPayments() {
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
-  const paginated  = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const paginated = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
-  if (selectedTxn) return <TransactionDetailPage txn={selectedTxn} onBack={handleBack} />;
+  if (selectedTxn) return <TransactionDetailPage txn={selectedTxn} onBack={handleBack} isMobile={isMobile} />;
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "28px 32px" }}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
 
       {/* Title row */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
-        <h1 style={{ margin: 0,  color: "#111" }}>Pending Payments</h1>
+        <h1 style={{ margin: 0, color: "#111", fontSize: isMobile ? 18 : 24 }}>Pending Payments</h1>
         <div style={{ display: "flex", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px", fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500 }}>
             All
@@ -138,13 +150,18 @@ export default function PendingPayments() {
       </div>
 
       {/* Stat cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 22 }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr",
+        gap: isMobile ? 10 : 14,
+        marginBottom: 22,
+      }}>
         {[
-          { label: "Total Revenue",     value: "₹1,33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 6 }}>↑37%</span> },
-          { label: "Pending Payments",  value: "₹1,33,345", extra: null },
-          { label: "Platform Earnings", value: "₹33,345",   extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 6 }}>↑37%</span> },
+          { label: "Total Revenue", value: "₹1,33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 6 }}>↑37%</span> },
+          { label: "Pending Payments", value: "₹1,33,345", extra: null },
+          { label: "Platform Earnings", value: "₹33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 6 }}>↑37%</span> },
         ].map(c => (
-          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 22px" }}>
+          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px 16px" : "18px 22px" }}>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{c.label}</div>
             <div style={{ display: "flex", alignItems: "baseline" }}>
               <span style={{ fontSize: 20, fontWeight: 500, color: "#111", letterSpacing: "-0.5px" }}>{c.value}</span>
@@ -158,19 +175,24 @@ export default function PendingPayments() {
       <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, overflow: "hidden" }}>
 
         {/* Controls */}
-        <div style={{ padding: "16px 20px", borderBottom: "1px solid #f3f4f6" }}>
+        <div style={{ padding: isMobile ? "14px" : "16px 20px", borderBottom: "1px solid #f3f4f6" }}>
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>Pending Payments</div>
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", background: "#fafafa", minWidth: 200 }}>
+            <div style={{
+              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
+              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
+              flex: isMobile ? "1 1 100%" : "0 0 auto",
+              minWidth: isMobile ? 0 : 200,
+            }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search"
-                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", width: 140 }} />
+                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", width: isMobile ? "100%" : 140 }} />
             </div>
 
-            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff" }}>
+            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff", flex: isMobile ? "1 1 auto" : "0 0 auto" }}>
               <select value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(1); }}
                 style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", cursor: "pointer", appearance: "none" }}>
                 <option value="All">Status (All)</option>
@@ -184,56 +206,229 @@ export default function PendingPayments() {
               </svg>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer" }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              MM/DD/YYYY
-            </div>
+            {/* Date picker — desktop only */}
+            {!isMobile && (
+              <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer" }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                MM/DD/YYYY
+              </div>
+            )}
 
-            <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            <button style={{
+              background: "#111", color: "#fff", border: "none", borderRadius: 7,
+              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
+              flex: isMobile ? "1 1 auto" : "0 0 auto",
+            }}>
               Filter
             </button>
           </div>
         </div>
 
-        {/* Table */}
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
-              {["Transa. ID", "Date & Time", "Customer", "Partner", "Service", "Amount", "Status", "Method", "Action"].map(h => (
-                <th key={h} style={{ padding: "11px 14px", textAlign: "left", color: "#9ca3af", fontWeight: 500, fontSize: 12, whiteSpace: "nowrap" }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
+        {isMobile ? (
+          <div style={{ padding: "10px 14px" }}>
             {paginated.length === 0 ? (
-              <tr><td colSpan={9} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No transactions found.</td></tr>
+              <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
+                No transactions found.
+              </div>
             ) : paginated.map((t, i) => (
-              <tr key={i}
-                style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+              <div
+                key={i}
+                style={{
+                  background: "#fafafa",
+                  border: "1px solid #f0f0f0",
+                  borderRadius: 10,
+                  padding: 14,
+                  marginBottom: 12,
+                }}
               >
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{t.id}</td>
-                <td style={{ padding: "13px 14px", fontSize: 12, color: "#6b7280", whiteSpace: "nowrap" }}>{t.datetime}</td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.customer}</td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.partner}</td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", maxWidth: 160 }}>{t.service}</td>
-                <td style={{ padding: "13px 14px",color: "#111", whiteSpace: "nowrap" }}>{t.amount}</td>
-                <td style={{ padding: "13px 14px" }}><StatusBadge status={t.status} /></td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.method}</td>
-                <td style={{ padding: "13px 14px" }}>
-                  <button onClick={() => handleView(t)}
-                    style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                {/* header */}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    marginBottom: 10,
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{t.id}</div>
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>
+                      {t.datetime}
+                    </div>
+                  </div>
+                  <StatusBadge status={t.status} />
+                </div>
+
+                {/* grid */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "6px 12px",
+                    marginBottom: 10,
+                  }}
+                >
+                  {[
+                    { label: "Customer", value: t.customer },
+                    { label: "Partner", value: t.partner },
+                    { label: "Service", value: t.service },
+                    { label: "Method", value: t.method },
+                  ].map((row) => (
+                    <div key={row.label}>
+                      <div
+                        style={{
+                          fontSize: 10,
+                          color: "#9ca3af",
+                          marginBottom: 1,
+                        }}
+                      >
+                        {row.label}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: "#374151",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {row.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* footer */}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingTop: 10,
+                    borderTop: "1px solid #f0f0f0",
+                  }}
+                >
+                  <span style={{ fontSize: 14, fontWeight: 700, color: "#111" }}>
+                    {t.amount}
+                  </span>
+
+                  <button
+                    style={{
+                      background: "#111",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 6,
+                      padding: "6px 18px",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
                     View
                   </button>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        ) : (
+          /* desktop table (your original code unchanged) */
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+                {[
+                  "Transa. ID",
+                  "Date & Time",
+                  "Customer",
+                  "Partner",
+                  "Service",
+                  "Amount",
+                  "Status",
+                  "Method",
+                  "Action",
+                ].map((h) => (
+                  <th
+                    key={h}
+                    style={{
+                      padding: "11px 14px",
+                      textAlign: "left",
+                      color: "#9ca3af",
+                      fontWeight: 500,
+                      fontSize: 12,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {paginated.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={9}
+                    style={{
+                      padding: 36,
+                      textAlign: "center",
+                      color: "#9ca3af",
+                      fontSize: 13,
+                    }}
+                  >
+                    No transactions found.
+                  </td>
+                </tr>
+              ) : (
+                paginated.map((t, i) => (
+                  <tr
+                    key={i}
+                    style={{
+                      borderBottom: "1px solid #f9fafb",
+                      transition: "background 0.1s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "#fafafa")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
+                    <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{t.id}</td>
+                    <td style={{ padding: "13px 14px", fontSize: 12, color: "#6b7280", whiteSpace: "nowrap" }}>{t.datetime}</td>
+                    <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.customer}</td>
+                    <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.partner}</td>
+                    <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", maxWidth: 160 }}>{t.service}</td>
+                    <td style={{ padding: "13px 14px", color: "#111", whiteSpace: "nowrap" }}>{t.amount}</td>
+                    <td style={{ padding: "13px 14px" }}>
+                      <StatusBadge status={t.status} />
+                    </td>
+                    <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.method}</td>
+                    <td style={{ padding: "13px 14px" }}>
+                      <button
+                        style={{
+                          background: "#111",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: 6,
+                          padding: "5px 18px",
+                          fontSize: 12,
+                          fontWeight: 600,
+                          cursor: "pointer",
+                        }}
+                      >
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        )}
 
         {/* Pagination */}
         <div style={{ padding: "12px 20px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280" }}>

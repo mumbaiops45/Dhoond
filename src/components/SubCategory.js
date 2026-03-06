@@ -1,5 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// ── RESPONSIVE HOOK ───────────────────────────────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const SUBCATEGORIES_DATA = [
@@ -78,7 +90,7 @@ function Modal({ title, message, onCancel, onConfirm, confirmLabel, confirmDange
 }
 
 // ── SCREEN 1: SUB-CATEGORY LIST ───────────────────────────────────────────────
-function SubCategoryList({ onView, onAdd }) {
+function SubCategoryList({ onView, onAdd, isMobile }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
@@ -87,35 +99,58 @@ function SubCategoryList({ onView, onAdd }) {
     c.subCategory.toLowerCase().includes(search.toLowerCase()) ||
     c.category.toLowerCase().includes(search.toLowerCase())
   );
+
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
   const paginated = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: "26px 28px" }}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: isMobile ? "16px 14px" : "26px 28px" }}>
 
       {/* Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h1 style={{ margin: 0, color: "#111" }}>Sub-Categories</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
+        <h1 style={{ margin: 0, color: "#111", fontSize: isMobile ? 18 : 24 }}>Sub-Categories</h1>
+
         <div style={{ display: "flex", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #e5e7eb", borderRadius: 7, background: "#fff", padding: "6px 12px", fontSize: 13, color: "#374151", cursor: "pointer" }}>
             All
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
           </div>
-          <button onClick={onAdd} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-            Add Sub-Category
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+
+          <button
+            onClick={onAdd}
+            style={{
+              background: "#111",
+              color: "#fff",
+              border: "none",
+              borderRadius: 7,
+              padding: "7px 16px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 13,
+              whiteSpace: "nowrap"
+            }}
+          >
+            {isMobile ? "Add" : "Add Sub-Category"}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
           </button>
         </div>
       </div>
 
       {/* Stat Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: isMobile ? 10 : 14, marginBottom: 16 }}>
         {[
-          { label: "Total Categories", value: "33" },
-          { label: "Total Profession", value: "453" },
-          { label: "Total Services", value: "3230" },
+          { label: "Total Sub Categories", value: "33" },
+          { label: "Total Bookings", value: "453" },
+          { label: "Active Partners", value: "3230" }
         ].map(c => (
-          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 22px" }}>
+          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px 16px" : "18px 22px" }}>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{c.label}</div>
             <div style={{ fontSize: 20, fontWeight: 500, color: "#111" }}>{c.value}</div>
           </div>
@@ -123,21 +158,38 @@ function SubCategoryList({ onView, onAdd }) {
       </div>
 
       {/* Filters */}
-      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "16px 20px", marginBottom: 16 }}>
-        <div style={{ color: "#374151", marginBottom: 14 }}>Filters</div>
-        <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px" : "16px 20px", marginBottom: 16 }}>
+        <div style={{ color: "#374151", marginBottom: 14, fontSize: 13 }}>Filters</div>
+
+        <div style={{ display: "flex", gap: isMobile ? 8 : 14, flexWrap: "wrap" }}>
           {[
             { label: "State", val: "Karnataka" },
             { label: "City", val: "Bengaluru" },
             { label: "Category", val: "All" },
             { label: "Sub-Category", val: "All" },
-            { label: "Partner Status", val: "All" },
+            { label: "Partner Status", val: "All" }
           ].map(f => (
-            <div key={f.label}>
+            <div key={f.label} style={{ flex: isMobile ? "1 1 calc(50% - 8px)" : "0 0 auto" }}>
               <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 5 }}>{f.label}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #e5e7eb", borderRadius: 7, background: "#fafafa", padding: "7px 12px", fontSize: 13, color: "#374151", cursor: "pointer", minWidth: 110 }}>
+
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                border: "1px solid #e5e7eb",
+                borderRadius: 7,
+                background: "#fafafa",
+                padding: "7px 12px",
+                fontSize: 13,
+                color: "#374151",
+                cursor: "pointer",
+                minWidth: isMobile ? 0 : 110
+              }}>
                 <span style={{ flex: 1 }}>{f.val}</span>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
+
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </div>
             </div>
           ))}
@@ -146,151 +198,410 @@ function SubCategoryList({ onView, onAdd }) {
 
       {/* Table Card */}
       <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, overflow: "hidden" }}>
-        <div style={{ padding: "14px 18px", borderBottom: "1px solid #f3f4f6" }}>
-          <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 12 }}>Sub-Category list</div>
-          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, background: "#fafafa", padding: "6px 12px", flex: 1 }}>
+
+        {/* Table Header */}
+        <div style={{ padding: isMobile ? "14px" : "14px 18px", borderBottom: "1px solid #f3f4f6" }}>
+          <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 12 }}>
+            Sub-Category list
+          </div>
+
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+
+            {/* Search */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 7,
+              border: "1px solid #e5e7eb",
+              borderRadius: 7,
+              background: "#fafafa",
+              padding: "6px 12px",
+              flex: isMobile ? "1 1 100%" : 1
+            }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
-              <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search"
-                style={{ border: "none", outline: "none", fontSize: 12, color: "#374151", background: "transparent", flex: 1 }} />
+
+              <input
+                value={search}
+                onChange={e => { setSearch(e.target.value); setPage(1); }}
+                placeholder="Search"
+                style={{ border: "none", outline: "none", fontSize: 12, color: "#374151", background: "transparent", flex: 1 }}
+              />
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #e5e7eb", borderRadius: 7, background: "#fff", padding: "6px 12px", fontSize: 12, color: "#374151", cursor: "pointer", whiteSpace: "nowrap" }}>
-              Status (All)
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
+
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #e5e7eb", borderRadius: 7, background: "#fff", padding: "6px 12px", fontSize: 12, color: "#374151", cursor: "pointer", whiteSpace: "nowrap" }}>
+                Status (All)
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+
+              <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 18px", cursor: "pointer", fontSize: 13 }}>
+                Filter
+              </button>
             </div>
-            <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", cursor: "pointer" }}>Filter</button>
           </div>
         </div>
 
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-          <thead>
-            <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
-              {["ID", "Sub-Category", "Category", "Total Bookings", "Active Partners", "Status", "Action"].map(h => (
-                <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 12, color: "#9ca3af", fontWeight: 500 }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paginated.map((row, i) => (
-              <tr key={i}
-                style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                <td style={{ padding: "12px 14px", color: "#374151" }}>{row.id}</td>
-                <td style={{ padding: "12px 14px", color: "#374151", fontWeight: 500 }}>{row.subCategory}</td>
-                <td style={{ padding: "12px 14px", color: "#374151" }}>{row.category}</td>
-                <td style={{ padding: "12px 14px", color: "#374151" }}>{row.totalBookings}</td>
-                <td style={{ padding: "12px 14px", color: "#374151" }}>{row.activePartners}</td>
-                <td style={{ padding: "12px 14px" }}><StatusBadge status={row.status} /></td>
-                <td style={{ padding: "12px 14px" }}>
-                  <button onClick={() => onView(row)} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", cursor: "pointer" }}>View</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {/* MOBILE CARDS */}
+        {isMobile ? (
+          <div style={{ padding: "10px 14px" }}>
+            {paginated.length === 0 ? (
+              <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
+                No sub-categories found.
+              </div>
+            ) : paginated.map((row, i) => (
+              <div key={i} style={{ background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 10, padding: 14, marginBottom: 12 }}>
 
-        {/* Pagination */}
-        <div style={{ padding: "11px 18px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 12, fontSize: 12, color: "#6b7280" }}>
-          <span>Rows per page: 10</span>
-          <span>1-{Math.min(rowsPerPage, filtered.length)} of {filtered.length}</span>
-          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-            style={{ background: "none", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 7px", cursor: page === 1 ? "not-allowed" : "pointer", opacity: page === 1 ? 0.4 : 1, display: "flex", alignItems: "center" }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6" /></svg>
-          </button>
-          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
-            style={{ background: "none", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 7px", cursor: page >= totalPages ? "not-allowed" : "pointer", opacity: page >= totalPages ? 0.4 : 1, display: "flex", alignItems: "center" }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6" /></svg>
-          </button>
-        </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{row.subCategory}</div>
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{row.id}</div>
+                  </div>
+
+                  <StatusBadge status={row.status} />
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
+                  {[
+                    { label: "Category", value: row.category },
+                    { label: "Total Bookings", value: row.totalBookings },
+                    { label: "Active Partners", value: row.activePartners }
+                  ].map(r => (
+                    <div key={r.label}>
+                      <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 1 }}>{r.label}</div>
+                      <div style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>{r.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "flex-end", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
+                  <button onClick={() => onView(row)} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "6px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                    View
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+
+          /* DESKTOP TABLE */
+
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+                {["ID", "Sub-Category", "Category", "Total Bookings", "Active Partners", "Status", "Action"].map(h => (
+                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 12, color: "#9ca3af", fontWeight: 500 }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {paginated.map((row, i) => (
+                <tr key={i} style={{ borderBottom: "1px solid #f9fafb" }}>
+                  <td style={{ padding: "12px 14px", color: "#374151" }}>{row.id}</td>
+                  <td style={{ padding: "12px 14px", fontWeight: 500 }}>{row.subCategory}</td>
+                  <td style={{ padding: "12px 14px" }}>{row.category}</td>
+                  <td style={{ padding: "12px 14px" }}>{row.totalBookings}</td>
+                  <td style={{ padding: "12px 14px" }}>{row.activePartners}</td>
+                  <td style={{ padding: "12px 14px" }}>
+                    <StatusBadge status={row.status} />
+                  </td>
+                  <td style={{ padding: "12px 14px" }}>
+                    <button onClick={() => onView(row)} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", cursor: "pointer" }}>
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+        )}
+
       </div>
     </div>
   );
 }
-
 // ── SCREEN 2: SUB-CATEGORY DETAIL ─────────────────────────────────────────────
-function SubCategoryDetail({ onBack, onEdit }) {
+function SubCategoryDetail({ onBack, onEdit, isMobile }) {
   const [tab, setTab] = useState("Overview");
   const d = SUBCATEGORY_DETAIL;
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: "26px 28px" }}>
-      <h1 style={{ margin: "0 0 4px", color: "#111" }}>Sub-Category Details</h1>
+    <div
+      style={{
+        flex: 1,
+        overflowY: "auto",
+        background: "#f9fafb",
+        padding: isMobile ? "16px 14px" : "26px 28px",
+      }}
+    >
+      <h1 style={{ margin: "0 0 4px", color: "#111", fontSize: isMobile ? 18 : 24 }}>
+        Sub-Category Details
+      </h1>
+
       <Breadcrumb items={["Admin", "Sub-Category", "Plumber"]} />
 
-      <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
+      {/* MAIN LAYOUT */}
+      <div
+        style={{
+          display: "flex",
+          gap: isMobile ? 14 : 18,
+          alignItems: "flex-start",
+          flexDirection: isMobile ? "column" : "row",
+        }}
+      >
+        {/* LEFT CARD */}
+        <div
+          style={{
+            width: isMobile ? "100%" : 280,
+            background: "#fff",
+            border: "1px solid #e5e7eb",
+            borderRadius: 10,
+            padding: isMobile ? 16 : 20,
+            flexShrink: 0,
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              height: isMobile ? 120 : 140,
+              background: "#f3f4f6",
+              borderRadius: 8,
+              marginBottom: 14,
+            }}
+          />
 
-        {/* Left Card */}
-        <div style={{ width: 280, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: 20, flexShrink: 0 }}>
-          <div style={{ width: "100%", height: 140, background: "#f3f4f6", borderRadius: 8, marginBottom: 14 }} />
-          <div style={{ fontWeight: 700, fontSize: 15, color: "#111", marginBottom: 14 }}>{d.name}</div>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: isMobile ? 14 : 15,
+              color: "#111",
+              marginBottom: 14,
+            }}
+          >
+            {d.name}
+          </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
+          {/* STATS */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 8,
+              marginBottom: 16,
+            }}
+          >
             <div style={{ background: "#E6E6E6", borderRadius: 8, padding: "10px 12px" }}>
-              <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 3 }}>Total Bookings</div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>{d.totalBookings}</div>
-              <div style={{ fontSize: 10, color: "#9ca3af" }}>Avg. rating : {d.avgRating}</div>
+              <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 3 }}>
+                Total Bookings
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>
+                {d.totalBookings}
+              </div>
+              <div style={{ fontSize: 10, color: "#9ca3af" }}>
+                Avg. rating : {d.avgRating}
+              </div>
             </div>
+
             <div style={{ background: "#E6E6E6", borderRadius: 8, padding: "10px 12px" }}>
-              <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 3 }}>Total Earned</div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>{d.totalEarned}</div>
+              <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 3 }}>
+                Total Earned
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>
+                {d.totalEarned}
+              </div>
               <div style={{ fontSize: 10, color: "#9ca3af" }}>Lifetime</div>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={onEdit} style={{ flex: 1, background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", cursor: "pointer" }}>Edit Sub-Category</button>
-            <button style={{ background: "#fff", color: "#374151", border: "1px solid #e5e7eb", borderRadius: 7, padding: "9px 12px", fontSize: 13, cursor: "pointer" }}>Deactivate</button>
+          {/* BUTTONS */}
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              flexDirection: isMobile ? "column" : "row",
+            }}
+          >
+            <button
+              onClick={onEdit}
+              style={{
+                flex: 1,
+                background: "#111",
+                color: "#fff",
+                border: "none",
+                borderRadius: 7,
+                padding: "9px 0",
+                cursor: "pointer",
+                fontSize: 13,
+              }}
+            >
+              Edit Sub-Category
+            </button>
+
+            <button
+              style={{
+                background: "#fff",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                borderRadius: 7,
+                padding: "9px 12px",
+                fontSize: 13,
+                cursor: "pointer",
+              }}
+            >
+              Deactivate
+            </button>
           </div>
         </div>
 
-        {/* Right Panel */}
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", marginBottom: 16 }}>
-            {["Overview", "Pricing & Analytics"].map(t => (
-              <button key={t} onClick={() => setTab(t)} style={{
-                padding: "9px 20px", background: "none", border: "none",
-                borderBottom: tab === t ? "2px solid #111" : "2px solid transparent",
-                cursor: "pointer", fontSize: 13,
-                fontWeight: tab === t ? 600 : 400,
-                color: tab === t ? "#111" : "#6b7280",
-                marginBottom: -1,
-              }}>{t}</button>
+        {/* RIGHT PANEL */}
+        <div style={{ flex: 1, width: "100%" }}>
+          {/* TABS */}
+          <div
+            style={{
+              display: "flex",
+              borderBottom: "1px solid #e5e7eb",
+              marginBottom: 16,
+              overflowX: isMobile ? "auto" : "visible",
+            }}
+          >
+            {["Overview", "Pricing & Analytics"].map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+               style={{
+                padding: "9px 18px", background: "none", border: "none",
+                backgroundColor: tab === t ? "#ffffff" : "transparent",
+                cursor: "pointer", color: tab === t ? "#111" : "#6b7280",
+                marginBottom: -1, whiteSpace: "nowrap", flexShrink: 0,
+              }}
+              >
+                {t}
+              </button>
             ))}
           </div>
 
+          {/* OVERVIEW TAB */}
           {tab === "Overview" && (
-            <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 24px" }}>
-              <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 18 }}>Overview</div>
+            <div
+              style={{
+                background: "#fff",
+                border: "1px solid #e5e7eb",
+                borderRadius: 10,
+                padding: isMobile ? 16 : "20px 24px",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: 14,
+                  color: "#111",
+                  marginBottom: 18,
+                }}
+              >
+                Overview
+              </div>
+
               {[
                 { label: "Category", val: d.category },
                 { label: "Sub-Category", val: d.subCategory },
                 { label: "Total Partners", val: d.totalPartners },
                 { label: "Status", val: d.status, green: true },
                 { label: "Created On", val: d.createdOn },
-              ].map(row => (
-                <div key={row.label} style={{ display: "flex", padding: "12px 0", borderBottom: "1px solid #f9fafb", gap: 16 }}>
-                  <div style={{ width: 140, fontSize: 13, color: "#9ca3af", flexShrink: 0 }}>{row.label}</div>
-                  <div style={{ fontSize: 13, color: row.green ? "#22c55e" : "#111", fontWeight: row.green ? 600 : 400 }}>{row.val}</div>
+              ].map((row) => (
+                <div
+                  key={row.label}
+                  style={{
+                    display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    padding: "12px 0",
+                    borderBottom: "1px solid #f9fafb",
+                    gap: isMobile ? 4 : 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: isMobile ? "100%" : 140,
+                      fontSize: 13,
+                      color: "#9ca3af",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {row.label}
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: row.green ? "#22c55e" : "#111",
+                      fontWeight: row.green ? 600 : 400,
+                    }}
+                  >
+                    {row.val}
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
+          {/* PRICING TAB */}
           {tab === "Pricing & Analytics" && (
-            <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 24px" }}>
-              <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 18 }}>Pricing & Analytics</div>
+            <div
+              style={{
+                background: "#fff",
+                border: "1px solid #e5e7eb",
+                borderRadius: 10,
+                padding: isMobile ? 16 : "20px 24px",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: 14,
+                  color: "#111",
+                  marginBottom: 18,
+                }}
+              >
+                Pricing & Analytics
+              </div>
+
               {[
                 { label: "Total Bookings", val: d.pricing.totalBookings },
                 { label: "Conversion Rate", val: d.pricing.conversionRate },
                 { label: "Cancel Rate", val: d.pricing.cancelRate },
                 { label: "Revenue", val: d.pricing.revenue },
-              ].map(row => (
-                <div key={row.label} style={{ display: "flex", padding: "12px 0", borderBottom: "1px solid #f9fafb", gap: 16 }}>
-                  <div style={{ width: 160, fontSize: 13, color: "#9ca3af", flexShrink: 0 }}>{row.label}</div>
-                  <div style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{row.val}</div>
+              ].map((row) => (
+                <div
+                  key={row.label}
+                  style={{
+                    display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    padding: "12px 0",
+                    borderBottom: "1px solid #f9fafb",
+                    gap: isMobile ? 4 : 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: isMobile ? "100%" : 160,
+                      fontSize: 13,
+                      color: "#9ca3af",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {row.label}
+                  </div>
+
+                  <div style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>
+                    {row.val}
+                  </div>
                 </div>
               ))}
             </div>
@@ -302,7 +613,7 @@ function SubCategoryDetail({ onBack, onEdit }) {
 }
 
 // ── SCREEN 3 & 4: ADD / UPDATE SUB-CATEGORY ───────────────────────────────────
-function SubCategoryForm({ isEdit, onBack }) {
+function SubCategoryForm({ isEdit, onBack, isMobile }) {
   const [selectedCategory, setSelectedCategory] = useState(isEdit ? "AC Technician" : "");
   const [name, setName] = useState(isEdit ? "Title of your notification" : "");
   const [desc, setDesc] = useState(isEdit ? "Add a short description" : "");
@@ -310,130 +621,379 @@ function SubCategoryForm({ isEdit, onBack }) {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f9fafb", padding: "26px 28px" }}>
-      <h1 style={{ margin: "0 0 4px", fontSize: 22, fontWeight: 700, color: "#111" }}>
+    <div
+      style={{
+        flex: 1,
+        overflowY: "auto",
+        background: "#f9fafb",
+        padding: isMobile ? "16px 14px" : "26px 28px",
+      }}
+    >
+      <h1
+        style={{
+          margin: "0 0 4px",
+          fontSize: isMobile ? 18 : 22,
+          fontWeight: 700,
+          color: "#111",
+        }}
+      >
         {isEdit ? "Update Sub-Category" : "New Sub-Category"}
       </h1>
-      <Breadcrumb items={isEdit
-        ? ["Admin", "Sub-Category", "Edit Sub-Category"]
-        : ["Admin", "Sub-Category", "Add Sub-Category"]}
+
+      <Breadcrumb
+        items={
+          isEdit
+            ? ["Admin", "Sub-Category", "Edit Sub-Category"]
+            : ["Admin", "Sub-Category", "Add Sub-Category"]
+        }
       />
 
-      <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
-
-        {/* Form Card */}
-        <div style={{ flex: 1, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 24px" }}>
-          <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 22 }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 18,
+          alignItems: "flex-start",
+          flexDirection: isMobile ? "column" : "row",
+        }}
+      >
+        {/* FORM CARD */}
+        <div
+          style={{
+            flex: 1,
+            background: "#fff",
+            border: "1px solid #e5e7eb",
+            borderRadius: 10,
+            padding: isMobile ? "18px 16px" : "20px 24px",
+            width: isMobile ? "100%" : "auto",
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: 14,
+              color: "#111",
+              marginBottom: 22,
+            }}
+          >
             {isEdit ? "Update Sub-Category" : "Add Sub-Category"}
           </div>
 
-          {/* Category Dropdown */}
-          <div style={{ display: "flex", gap: 20, marginBottom: 18, alignItems: "center" }}>
-            <div style={{ width: 140, fontSize: 13, color: "#374151", flexShrink: 0 }}>Category</div>
-            <div style={{ flex: 1, position: "relative" }}>
+          {/* CATEGORY */}
+          <div
+            style={{
+              display: "flex",
+              gap: 20,
+              marginBottom: 18,
+              alignItems: isMobile ? "flex-start" : "center",
+              flexDirection: isMobile ? "column" : "row",
+            }}
+          >
+            <div
+              style={{
+                width: isMobile ? "100%" : 140,
+                fontSize: 13,
+                color: "#374151",
+                flexShrink: 0,
+              }}
+            >
+              Category
+            </div>
+
+            <div style={{ flex: 1, width: isMobile ? "100%" : "auto", position: "relative" }}>
               <select
                 value={selectedCategory}
-                onChange={e => setSelectedCategory(e.target.value)}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 style={{
-                  width: "100%", border: "1px solid #e5e7eb", borderRadius: 7,
-                  padding: "8px 36px 8px 12px", fontSize: 13, color: selectedCategory ? "#374151" : "#9ca3af",
-                  background: "#fafafa", outline: "none", appearance: "none", cursor: "pointer",
+                  width: "100%",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: 7,
+                  padding: "8px 36px 8px 12px",
+                  fontSize: 13,
+                  color: selectedCategory ? "#374151" : "#9ca3af",
+                  background: "#fafafa",
+                  outline: "none",
+                  appearance: "none",
+                  cursor: "pointer",
                 }}
               >
-                <option value="" disabled>Select</option>
-                {CATEGORY_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                <option value="" disabled>
+                  Select
+                </option>
+                {CATEGORY_OPTIONS.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
               </select>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round"
-                style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#aaa"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                style={{
+                  position: "absolute",
+                  right: 12,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  pointerEvents: "none",
+                }}
+              >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </div>
           </div>
 
-          {/* Sub-Category Name */}
-          <div style={{ display: "flex", gap: 20, marginBottom: 18, alignItems: "center" }}>
-            <div style={{ width: 140, fontSize: 13, color: "#374151", flexShrink: 0 }}>Sub-Category Name</div>
+          {/* NAME */}
+          <div
+            style={{
+              display: "flex",
+              gap: 20,
+              marginBottom: 18,
+              alignItems: isMobile ? "flex-start" : "center",
+              flexDirection: isMobile ? "column" : "row",
+            }}
+          >
+            <div
+              style={{
+                width: isMobile ? "100%" : 140,
+                fontSize: 13,
+                color: "#374151",
+                flexShrink: 0,
+              }}
+            >
+              Sub-Category Name
+            </div>
+
             <input
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Enter name"
-              style={{ flex: 1, border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 12px", fontSize: 13, color: "#374151", outline: "none", background: "#fafafa" }}
+              style={{
+                flex: 1,
+                width: isMobile ? "100%" : "auto",
+                border: "1px solid #e5e7eb",
+                borderRadius: 7,
+                padding: "8px 12px",
+                fontSize: 13,
+                color: "#374151",
+                outline: "none",
+                background: "#fafafa",
+                boxSizing: "border-box",
+              }}
             />
           </div>
 
-          {/* Description */}
-          <div style={{ display: "flex", gap: 20, marginBottom: 8, alignItems: "flex-start" }}>
-            <div style={{ width: 140, fontSize: 13, color: "#374151", flexShrink: 0, paddingTop: 8 }}>Description</div>
-            <div style={{ flex: 1 }}>
+          {/* DESCRIPTION */}
+          <div
+            style={{
+              display: "flex",
+              gap: 20,
+              marginBottom: 8,
+              alignItems: "flex-start",
+              flexDirection: isMobile ? "column" : "row",
+            }}
+          >
+            <div
+              style={{
+                width: isMobile ? "100%" : 140,
+                fontSize: 13,
+                color: "#374151",
+                paddingTop: isMobile ? 0 : 8,
+                flexShrink: 0,
+              }}
+            >
+              Description
+            </div>
+
+            <div style={{ flex: 1, width: isMobile ? "100%" : "auto" }}>
               <textarea
                 value={desc}
-                onChange={e => setDesc(e.target.value)}
+                onChange={(e) => setDesc(e.target.value)}
                 placeholder="Enter description"
                 rows={5}
-                style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 12px", fontSize: 13, color: "#374151", outline: "none", background: "#fafafa", resize: "vertical", boxSizing: "border-box" }}
+                style={{
+                  width: "100%",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: 7,
+                  padding: "8px 12px",
+                  fontSize: 13,
+                  color: "#374151",
+                  outline: "none",
+                  background: "#fafafa",
+                  resize: "vertical",
+                  boxSizing: "border-box",
+                }}
               />
-              <div className="flex justify-between">
-                <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>142 Characters left</div>
-                <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
-                  {["B", "I", "🔗", "≡"].map(t => (
-                    <button key={t} style={{ background: "none", border: "none", fontSize: 13, color: "#9ca3af", cursor: "pointer", padding: "2px 4px" }}>{t}</button>
-                  ))}
+
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>
+                  142 Characters left
                 </div>
 
+                <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+                  {["B", "I", "🔗", "≡"].map((t) => (
+                    <button
+                      key={t}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        fontSize: 13,
+                        color: "#9ca3af",
+                        cursor: "pointer",
+                        padding: "2px 4px",
+                      }}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
               </div>
-
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* BUTTONS */}
           <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
-            <button onClick={() => setShowDeleteModal(true)} style={{ background: "#fff", color: "#374151", border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 22px", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>Delete</button>
-            <button onClick={() => isEdit ? setShowUpdateModal(true) : null} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 22px", cursor: "pointer" }}>
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              style={{
+                background: "#fff",
+                color: "#374151",
+                border: "1px solid #e5e7eb",
+                borderRadius: 7,
+                padding: "8px 22px",
+                fontSize: 13,
+                fontWeight: 500,
+                cursor: "pointer",
+              }}
+            >
+              Delete
+            </button>
+
+            <button
+              onClick={() => (isEdit ? setShowUpdateModal(true) : null)}
+              style={{
+                background: "#111",
+                color: "#fff",
+                border: "none",
+                borderRadius: 7,
+                padding: "8px 22px",
+                cursor: "pointer",
+                fontSize: 13,
+              }}
+            >
               {isEdit ? "Update Sub-Category" : "Add Sub-Category"}
             </button>
           </div>
         </div>
 
-        {/* Image Card */}
-        <div style={{ width: 220, flexShrink: 0 }}>
-          <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px" }}>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 4 }}>Sub-Category Image</div>
-            <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 14 }}>Add a photo of Sub-Category</div>
+        {/* IMAGE CARD */}
+        <div
+          style={{
+            width: isMobile ? "100%" : 220,
+            flexShrink: 0,
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              border: "1px solid #e5e7eb",
+              borderRadius: 10,
+              padding: 20,
+            }}
+          >
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 4 }}>
+              Sub-Category Image
+            </div>
+
+            <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 14 }}>
+              Add a photo of Sub-Category
+            </div>
 
             {isEdit ? (
-              /* Edit mode: show grey image box */
-              <div style={{ width: "100%", height: 140, background: "#f3f4f6", borderRadius: 8, marginBottom: 12 }} />
+              <div
+                style={{
+                  width: "100%",
+                  height: 140,
+                  background: "#f3f4f6",
+                  borderRadius: 8,
+                  marginBottom: 12,
+                }}
+              />
             ) : (
-              /* Add mode: dashed drop zone */
-              <div style={{
-                border: "2px dashed #e5e7eb", borderRadius: 8, height: 130,
-                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                background: "#fafafa", cursor: "pointer", marginBottom: 12,
-              }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 8 }}>Select or Drop File</div>
+              <div
+                style={{
+                  border: "2px dashed #e5e7eb",
+                  borderRadius: 8,
+                  height: 130,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "#fafafa",
+                  cursor: "pointer",
+                  marginBottom: 12,
+                }}
+              >
+                <div style={{ fontSize: 12, color: "#9ca3af" }}>
+                  Select or Drop File
+                </div>
               </div>
             )}
 
             <div style={{ display: "flex", gap: 8 }}>
-              <button style={{ flex: 1, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "8px 0", fontSize: 12, color: "#374151", cursor: "pointer" }}>Delete</button>
-              {isEdit
-                ? <button style={{ flex: 1, background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 0", cursor: "pointer" }}>Edit</button>
-                : <button style={{ width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", cursor: "pointer", marginTop: 4 }}>Upload</button>
-              }
+              <button
+                style={{
+                  flex: 1,
+                  background: "#fff",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: 7,
+                  padding: "8px 0",
+                  fontSize: 12,
+                  color: "#374151",
+                  cursor: "pointer",
+                }}
+              >
+                Delete
+              </button>
+
+              {isEdit ? (
+                <button
+                  style={{
+                    flex: 1,
+                    background: "#111",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 7,
+                    padding: "8px 0",
+                    cursor: "pointer",
+                  }}
+                >
+                  Edit
+                </button>
+              ) : (
+                <button
+                  style={{
+                    flex: 1,
+                    background: "#111",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 7,
+                    padding: "8px 0",
+                    cursor: "pointer",
+                  }}
+                >
+                  Upload
+                </button>
+              )}
             </div>
-            {!isEdit && (
-              <button style={{ width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "9px 0", cursor: "pointer", marginTop: 8 }}>Upload</button>
-            )}
           </div>
         </div>
       </div>
 
-      {/* Delete Modal */}
       {showDeleteModal && (
         <Modal
           title="Delete Sub-Category"
@@ -445,7 +1005,6 @@ function SubCategoryForm({ isEdit, onBack }) {
         />
       )}
 
-      {/* Update Modal */}
       {showUpdateModal && (
         <Modal
           title="Update Sub-Category"
@@ -453,7 +1012,6 @@ function SubCategoryForm({ isEdit, onBack }) {
           onCancel={() => setShowUpdateModal(false)}
           onConfirm={() => setShowUpdateModal(false)}
           confirmLabel="Update"
-          confirmDanger={false}
         />
       )}
     </div>
@@ -462,11 +1020,12 @@ function SubCategoryForm({ isEdit, onBack }) {
 
 // ── ROOT COMPONENT ─────────────────────────────────────────────────────────────
 export default function SubCategory() {
+  const isMobile = useIsMobile();
   const [screen, setScreen] = useState("list"); // list | detail | add | edit
 
-  if (screen === "detail") return <SubCategoryDetail onBack={() => setScreen("list")} onEdit={() => setScreen("edit")} />;
-  if (screen === "add") return <SubCategoryForm isEdit={false} onBack={() => setScreen("list")} />;
-  if (screen === "edit") return <SubCategoryForm isEdit={true} onBack={() => setScreen("detail")} />;
+  if (screen === "detail") return <SubCategoryDetail onBack={() => setScreen("list")} onEdit={() => setScreen("edit")} isMobile={isMobile}  />;
+  if (screen === "add") return <SubCategoryForm isEdit={false} onBack={() => setScreen("list")} isMobile={isMobile} />;
+  if (screen === "edit") return <SubCategoryForm isEdit={true} onBack={() => setScreen("detail")} isMobile={isMobile}  />;
 
-  return <SubCategoryList onView={() => setScreen("detail")} onAdd={() => setScreen("add")} />;
+  return <SubCategoryList onView={() => setScreen("detail")} onAdd={() => setScreen("add")}  isMobile={isMobile} />;
 }

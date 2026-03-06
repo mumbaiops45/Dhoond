@@ -1,5 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// ── RESPONSIVE HOOK ───────────────────────────────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer,
@@ -7,12 +20,12 @@ import {
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const chartData = [
-  { name: "Plumbing",   partner: 55, company: 30 },
+  { name: "Plumbing", partner: 55, company: 30 },
   { name: "Electrical", partner: 80, company: 40 },
-  { name: "Carpentry",  partner: 95, company: 55 },
-  { name: "Cleaning",   partner: 70, company: 48 },
-  { name: "Cleaning",   partner: 82, company: 45 },
-  { name: "Cleaning",   partner: 75, company: 42 },
+  { name: "Carpentry", partner: 95, company: 55 },
+  { name: "Cleaning", partner: 70, company: 48 },
+  { name: "Cleaning", partner: 82, company: 45 },
+  { name: "Cleaning", partner: 75, company: 42 },
 ];
 
 const TABLE_DATA = Array.from({ length: 13 }, (_, i) => ({
@@ -45,6 +58,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export default function Revenue() {
+  const isMobile = useIsMobile();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -57,20 +71,11 @@ export default function Revenue() {
   const paginated = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   return (
-    <div style={{
-      
-      flex: 1,
-      overflowY: "auto",
-      padding: "26px 28px",
-      background: "#f9fafb",
-      display: "flex",
-      flexDirection: "column",
-      gap: 16,
-    }}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
 
       {/* ── Header ── */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1 style={{ margin: 0, color: "#111" }}>Revenue</h1>
+        <h1 style={{ margin: 0, color: "#111", fontSize: isMobile ? 18 : 24 }}>Revenue</h1>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           <div style={{
             display: "flex", alignItems: "center", gap: 6,
@@ -96,14 +101,19 @@ export default function Revenue() {
       </div>
 
       {/* ── Stat Cards ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr",
+        gap: isMobile ? 10 : 14,
+        marginBottom: 22,
+      }}>
         {[
-          { label: "Total Revenue",     value: "₹1,33,345", badge: "-37%", badgeColor: "#ef4444" },
-          { label: "Pending Payments",  value: "₹1,33,345", badge: null },
-          { label: "Platform Earnings", value: "₹33,345",   badge: "-37%", badgeColor: "#ef4444" },
+          { label: "Total Revenue", value: "₹1,33,345", badge: "-37%", badgeColor: "#ef4444" },
+          { label: "Pending Payments", value: "₹1,33,345", badge: null },
+          { label: "Platform Earnings", value: "₹33,345", badge: "-37%", badgeColor: "#ef4444" },
         ].map(c => (
           <div key={c.label} style={{
-            background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 22px",
+            background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px 16px" : "18px 22px",
           }}>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{c.label}</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
@@ -115,33 +125,113 @@ export default function Revenue() {
       </div>
 
       {/* ── Filters ── */}
-      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "16px 20px" }}>
-        <div style={{ fontSize: 13, color: "#374151", fontWeight: 600, marginBottom: 14 }}>Filters</div>
-        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "flex-end" }}>
-          {[
-            { label: "State",        val: "Karnataka" },
-            { label: "City",         val: "Bengaluru" },
-            { label: "Category",     val: "All" },
-            { label: "Sub-Category", val: "All" },
-            { label: "SKU",          val: "All" },
-          ].map(f => (
-            <div key={f.label}>
-              <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 5 }}>{f.label}</div>
-              <div style={{
-                display: "flex", alignItems: "center", gap: 6,
-                border: "1px solid #e5e7eb", borderRadius: 7, background: "#fafafa",
-                padding: "6px 10px", fontSize: 12, color: "#374151",
-                cursor: "pointer", minWidth: 100,
-              }}>
-                <span style={{ flex: 1 }}>{f.val}</span>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </div>
-            </div>
-          ))}
+      {isMobile ? (
+
+  /* ── MOBILE ── */
+  <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "16px 14px" }}>
+    
+    <div style={{ fontSize: 13, color: "#374151", fontWeight: 600, marginBottom: 14 }}>
+      Filters
+    </div>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 12
+      }}
+    >
+      {[
+        { label: "State", val: "Karnataka" },
+        { label: "City", val: "Bengaluru" },
+        { label: "Category", val: "All" },
+        { label: "Sub-Category", val: "All" },
+        { label: "SKU", val: "All" },
+      ].map((f) => (
+        <div key={f.label}>
+          
+          <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 4 }}>
+            {f.label}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              border: "1px solid #e5e7eb",
+              borderRadius: 7,
+              background: "#fafafa",
+              padding: "7px 10px",
+              fontSize: 12,
+              color: "#374151",
+              cursor: "pointer",
+              width: "100%",
+            }}
+          >
+            <span style={{ flex: 1 }}>{f.val}</span>
+
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+
+) : (
+
+  /* ── DESKTOP (UNCHANGED) ── */
+  <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "16px 20px" }}>
+    
+    <div style={{ fontSize: 13, color: "#374151", fontWeight: 600, marginBottom: 14 }}>
+      Filters
+    </div>
+
+    <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "flex-end" }}>
+      {[
+        { label: "State", val: "Karnataka" },
+        { label: "City", val: "Bengaluru" },
+        { label: "Category", val: "All" },
+        { label: "Sub-Category", val: "All" },
+        { label: "SKU", val: "All" },
+      ].map((f) => (
+        <div key={f.label}>
+          
+          <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 5 }}>
+            {f.label}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              border: "1px solid #e5e7eb",
+              borderRadius: 7,
+              background: "#fafafa",
+              padding: "6px 10px",
+              fontSize: 12,
+              color: "#374151",
+              cursor: "pointer",
+              minWidth: 100,
+            }}
+          >
+            <span style={{ flex: 1 }}>{f.val}</span>
+
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2.5" strokeLinecap="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+)}
 
       {/* ── Chart ── */}
       <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 20px" }}>
@@ -175,15 +265,16 @@ export default function Revenue() {
       <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10 }}>
 
         {/* Controls */}
-        <div style={{ padding: "14px 18px", borderBottom: "1px solid #f3f4f6" }}>
+        <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "26px 30px" }}>
           <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 12 }}>Revenue</div>
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
 
             {/* Search */}
             <div style={{
-              display: "flex", alignItems: "center", gap: 7,
-              border: "1px solid #e5e7eb", borderRadius: 7, background: "#fafafa",
-              padding: "6px 12px", flex: 1,
+              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
+              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
+              flex: isMobile ? "1 1 100%" : "0 0 auto",
+              minWidth: isMobile ? 0 : 200,
             }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -234,44 +325,162 @@ export default function Revenue() {
         </div>
 
         {/* Table */}
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-          <thead>
-            <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
-              {["Category", "Subcategory", "Total Bookings", "Total Revenue", "Platform Commissions", "Partner Payout", "Taxes Collected"].map(h => (
-                <th key={h} style={{
-                  padding: "10px 14px", textAlign: "left",
-                  fontSize: 12, color: "#9ca3af", fontWeight: 500, whiteSpace: "nowrap",
-                }}>
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
+        {isMobile ? (
+          /* ── MOBILE: revenue cards ── */
+          <div style={{ padding: "10px 14px" }}>
             {paginated.length === 0 ? (
-              <tr>
-                <td colSpan={7} style={{ padding: 32, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
-                  No results found.
-                </td>
-              </tr>
+              <div style={{ padding: 32, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
+                No results found.
+              </div>
             ) : paginated.map((row, i) => (
-              <tr
+              <div
                 key={i}
-                style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                style={{
+                  background: "#fafafa",
+                  border: "1px solid #f0f0f0",
+                  borderRadius: 10,
+                  padding: 14,
+                  marginBottom: 12,
+                }}
               >
-                <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>{row.category}</td>
-                <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>{row.subcategory}</td>
-                <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>{row.bookings}</td>
-                <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>{row.revenue}</td>
-                <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>{row.commission}</td>
-                <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>{row.payout}</td>
-                <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>{row.taxes}</td>
-              </tr>
+                {/* Card header */}
+                <div style={{ marginBottom: 10 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>
+                    {row.category}
+                  </div>
+                  <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>
+                    {row.subcategory}
+                  </div>
+                </div>
+
+                {/* Card body */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "6px 12px",
+                  }}
+                >
+                  {[
+                    { label: "Bookings", value: row.bookings },
+                    { label: "Revenue", value: row.revenue },
+                    { label: "Commission", value: row.commission },
+                    { label: "Partner Payout", value: row.payout },
+                    { label: "Taxes", value: row.taxes },
+                  ].map((item) => (
+                    <div key={item.label}>
+                      <div
+                        style={{
+                          fontSize: 10,
+                          color: "#9ca3af",
+                          marginBottom: 2,
+                        }}
+                      >
+                        {item.label}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: "#374151",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {item.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        ) : (
+          /* ── DESKTOP: your original table (unchanged) ── */
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+                {[
+                  "Category",
+                  "Subcategory",
+                  "Total Bookings",
+                  "Total Revenue",
+                  "Platform Commissions",
+                  "Partner Payout",
+                  "Taxes Collected",
+                ].map((h) => (
+                  <th
+                    key={h}
+                    style={{
+                      padding: "10px 14px",
+                      textAlign: "left",
+                      fontSize: 12,
+                      color: "#9ca3af",
+                      fontWeight: 500,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {paginated.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={7}
+                    style={{
+                      padding: 32,
+                      textAlign: "center",
+                      color: "#9ca3af",
+                      fontSize: 13,
+                    }}
+                  >
+                    No results found.
+                  </td>
+                </tr>
+              ) : (
+                paginated.map((row, i) => (
+                  <tr
+                    key={i}
+                    style={{
+                      borderBottom: "1px solid #f9fafb",
+                      transition: "background 0.1s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "#fafafa")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
+                    <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>
+                      {row.category}
+                    </td>
+                    <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>
+                      {row.subcategory}
+                    </td>
+                    <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>
+                      {row.bookings}
+                    </td>
+                    <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>
+                      {row.revenue}
+                    </td>
+                    <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>
+                      {row.commission}
+                    </td>
+                    <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>
+                      {row.payout}
+                    </td>
+                    <td style={{ padding: "11px 14px", color: "#374151", fontSize: 12 }}>
+                      {row.taxes}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        )}
 
         {/* Pagination */}
         <div style={{

@@ -1,5 +1,17 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// ── RESPONSIVE HOOK ───────────────────────────────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const ALL_BOOKINGS_DATA = [
@@ -138,68 +150,60 @@ function OrderBadge({ status }) {
 
 function PaymentBadge({ status }) {
   const styles = {
-    "Paid":     { color: "#ffffff", bg: "#61DF41", padding: "3px 12px", borderRadius: 5},
-    "Pending":  { color: "#000000", bg: "#F2F6FF", padding: "3px 10px", borderRadius: 5},
-    "Refunded": { color: "#ffffff", bg: "#fef9c3", padding: "3px 12px", borderRadius: 5},
+    "Paid":     { color: "#ffffff", bg: "#61DF41", padding: "3px 12px", borderRadius: 5 },
+    "Pending":  { color: "#000000", bg: "#F2F6FF", padding: "3px 10px", borderRadius: 5 },
+    "Refunded": { color: "#ffffff", bg: "#fef9c3", padding: "3px 12px", borderRadius: 5 },
   };
   const s = styles[status] || styles["Pending"];
   return (
-    <span style={{ display: "inline-block",textAlign:"center", fontSize: 12, color: s.color, background: s.bg, padding: s.padding, borderRadius: s.borderRadius, width:"100%" }}>
-      {status}
-    </span>
+    <span
+  style={{
+    display: "inline-block",
+    width: 70,              // same width for all badges
+    textAlign: "center",
+    fontSize: 12,
+    color: s.color,
+    background: s.bg,
+    padding: s.padding,
+    borderRadius: s.borderRadius
+  }}
+>
+  {status}
+</span>
   );
 }
 
-// ── LABEL / VALUE ROW ─────────────────────────────────────────────────────────
-function Row({ label, value, valueEl, alignLeft = false }) { // alignLeft defaults to false
-  
-  // Style for the main container (using conditional logic)
+// ── LABEL / VALUE ROW — exact original, untouched ─────────────────────────────
+function Row({ label, value, valueEl, alignLeft = false }) {
   const containerStyle = {
     display: "flex",
     alignItems: "center",
-    marginBottom: 10, // vertical spacing between rows
-    
-    // --- CONDITIONAL ALIGNMENT ---
+    marginBottom: 10,
     ...(alignLeft ? {
-        // IF alignLeft IS TRUE (e.g., Payment Status)
-        justifyContent: "flex-start", // align everything to the left
-         // space between text and badge
+      justifyContent: "flex-start",
     } : {
-        // IF alignLeft IS FALSE (e.g., standard layout)
-        justifyContent: "space-between", // push value to the far right
+      justifyContent: "space-between",
     }),
   };
 
-  // Wrapper for the value/badge (text or order badge)
   const valueWrapperStyle = {
     fontSize: 13,
     fontWeight: 500,
-    color: "#111", // default value color
+    color: "#111",
   };
 
   return (
     <div style={containerStyle}>
-      
-      {/* Label section - color is usually gray */}
-      <div style={{
-        color: "#6b7280",
-        fontSize: 13,
-        width:"30%"
-      }}>
+      <div style={{ color: "#6b7280", fontSize: 13, width: "30%" }}>
         {label}:
       </div>
-
-      {/* Value section (Text or Badge) */}
       <div style={valueWrapperStyle}>
-        {valueEl ? (
-          valueEl // render a badge (like the pending badge)
-        ) : (
-          value   // render plain text (like the ID)
-        )}
+        {valueEl ? valueEl : value}
       </div>
     </div>
   );
 }
+
 // ── CARD ──────────────────────────────────────────────────────────────────────
 function Card({ title, children, style }) {
   return (
@@ -211,12 +215,12 @@ function Card({ title, children, style }) {
 }
 
 // ── BOOKING DETAIL PAGE ───────────────────────────────────────────────────────
-function BookingDetailPage({ booking, onBack }) {
+function BookingDetailPage({ booking, onBack, isMobile }) {
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "26px 30px"}}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "26px 30px" }}>
 
       {/* Header */}
-      <h1 style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 700, color: "#111" }}>
+      <h1 style={{ margin: "0 0 4px", fontSize: isMobile ? 17 : 20, fontWeight: 700, color: "#111" }}>
         Booking Details - {booking.id}
       </h1>
       <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 22 }}>
@@ -227,14 +231,19 @@ function BookingDetailPage({ booking, onBack }) {
         <span style={{ color: "#2563eb" }}>{booking.id}</span>
       </div>
 
-      {/* Two-column layout */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
+      {/* Two-column on desktop, single column on mobile */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: 16,
+        alignItems: "start",
+      }}>
 
         {/* ── LEFT COLUMN ── */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
           {/* Booking Summary */}
-          <Card title="Booking Summary " >
+          <Card title="Booking Summary ">
             <Row alignLeft={true} label="Booking ID"     value={booking.id} />
             <Row alignLeft={true} label="Date"           value={booking.date} />
             <Row alignLeft={true} label="Status"         valueEl={<OrderBadge status={booking.orderStatus} />} />
@@ -283,11 +292,11 @@ function BookingDetailPage({ booking, onBack }) {
             <Row alignLeft={true} label="Experience" value={booking.partnerExperience} />
           </Card>
 
-          {/* Payment Breakdown */}
+          {/* Payment Breakdown — alignLeft is FALSE (original): space-between layout preserved */}
           <Card title="Payment Breakdown">
-            <Row label="Base Price"       value={booking.basePrice} />
-            <Row label="Extra Charges"    value={booking.extraCharges} />
-            <Row label="Taxes"            value={booking.taxes} />
+            <Row label="Base Price"    value={booking.basePrice} />
+            <Row label="Extra Charges" value={booking.extraCharges} />
+            <Row label="Taxes"         value={booking.taxes} />
 
             {/* Divider */}
             <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
@@ -311,18 +320,19 @@ function BookingDetailPage({ booking, onBack }) {
 
 // ── ALL BOOKINGS LIST ─────────────────────────────────────────────────────────
 export default function AllBookings() {
-  const [search, setSearch]               = useState("");
-  const [paymentFilter, setPaymentFilter] = useState("All");
+  const isMobile = useIsMobile();
+  const [search, setSearch]                   = useState("");
+  const [paymentFilter, setPaymentFilter]     = useState("All");
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [rowsPerPage, setRowsPerPage]     = useState(10);
-  const [page, setPage]                   = useState(1);
+  const [rowsPerPage, setRowsPerPage]         = useState(10);
+  const [page, setPage]                       = useState(1);
 
   const handleView = (b) => setSelectedBooking(b);
   const handleBack = ()  => setSelectedBooking(null);
 
   const filtered = ALL_BOOKINGS_DATA.filter(b => {
     const q = search.toLowerCase();
-    const matchSearch = !q || [b.id, b.customer, b.partner, b.service].some(v => v.toLowerCase().includes(q));
+    const matchSearch  = !q || [b.id, b.customer, b.partner, b.service].some(v => v.toLowerCase().includes(q));
     const matchPayment = paymentFilter === "All" || b.payment === paymentFilter;
     return matchSearch && matchPayment;
   });
@@ -331,22 +341,19 @@ export default function AllBookings() {
   const paginated  = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   if (selectedBooking) {
-    return <BookingDetailPage booking={selectedBooking} onBack={handleBack} />;
+    return <BookingDetailPage booking={selectedBooking} onBack={handleBack} isMobile={isMobile} />;
   }
 
   return (
-    <div style={{
-      flex: 1, overflowY: "auto", background: "#f7f8fa",
-      padding: "28px 32px"
-    }}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
 
       {/* Title */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
-        <h1 style={{ margin: 0, color: "#111" }}>All Bookings</h1>
+        <h1 style={{ margin: 0, color: "#111", fontSize: isMobile ? 18 : 24 }}>All Bookings</h1>
         <div style={{
           display: "flex", alignItems: "center", gap: 5, background: "#fff",
           border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px",
-          fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500
+          fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500,
         }}>
           All
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round">
@@ -356,13 +363,18 @@ export default function AllBookings() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid md:grid-cols-3 grid-cols-1" style={{ gap: 14, marginBottom: 22 }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
+        gap: isMobile ? 10 : 14,
+        marginBottom: 22,
+      }}>
         {[
           { label: "Total Bookings",     value: "33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 4 }}>↑37%</span> },
           { label: "Completed Bookings", value: "33,253", extra: null },
           { label: "Conversion Rate",    value: "98%",    extra: null },
         ].map(c => (
-          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 22px" }}>
+          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px 16px" : "18px 22px" }}>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{c.label}</div>
             <div style={{ display: "flex", alignItems: "baseline" }}>
               <span style={{ fontSize: 20, fontWeight: 500, color: "#111", letterSpacing: "-0.5px" }}>{c.value}</span>
@@ -376,13 +388,16 @@ export default function AllBookings() {
       <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, overflow: "hidden" }}>
 
         {/* Controls */}
-        <div style={{ padding: "16px 20px", borderBottom: "1px solid #f3f4f6" }}>
+        <div style={{ padding: isMobile ? "14px" : "16px 20px", borderBottom: "1px solid #f3f4f6" }}>
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>All Bookings</div>
-          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
 
+            {/* Search — full width on mobile */}
             <div style={{
               display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", background: "#fafafa", minWidth: 180
+              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
+              flex: isMobile ? "1 1 100%" : "0 0 auto",
+              minWidth: isMobile ? 0 : 180,
             }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -391,15 +406,16 @@ export default function AllBookings() {
                 value={search}
                 onChange={e => { setSearch(e.target.value); setPage(1); }}
                 placeholder="Search"
-                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", width: 120 }}
+                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", width: isMobile ? "100%" : 120 }}
               />
             </div>
 
-            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff" }}>
+            {/* Payment filter */}
+            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff", flex: isMobile ? "1 1 auto" : "0 0 auto" }}>
               <select
                 value={paymentFilter}
                 onChange={e => { setPaymentFilter(e.target.value); setPage(1); }}
-                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", cursor: "pointer", appearance: "none" }}
+                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", cursor: "pointer", appearance: "none", width: "100%" }}
               >
                 <option value="All">Payment Status (All)</option>
                 <option value="Paid">Paid</option>
@@ -412,74 +428,127 @@ export default function AllBookings() {
               </svg>
             </div>
 
-            <div style={{
-              display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer"
-            }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              MM/DD/YYYY
-            </div>
+            {/* Date picker — desktop only */}
+            {!isMobile && (
+              <div style={{
+                display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb",
+                borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer",
+              }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                MM/DD/YYYY
+              </div>
+            )}
 
             <button style={{
               background: "#111", color: "#fff", border: "none", borderRadius: 7,
-              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer"
+              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
+              flex: isMobile ? "1 1 auto" : "0 0 auto",
             }}>
               Filter
             </button>
           </div>
         </div>
 
-        {/* Table */}
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
-              {["Booking ID", "Customer", "Partner", "Service", "Date", "Order status", "Payment", "Amount", "Action"].map(h => (
-                <th key={h} style={{ padding: "11px 16px", textAlign: "left", color: "#9ca3af", fontWeight: 500, fontSize: 12, whiteSpace: "nowrap" }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
+        {/* ── MOBILE: booking cards ── */}
+        {isMobile ? (
+          <div style={{ padding: "10px 14px" }}>
             {paginated.length === 0 ? (
-              <tr>
-                <td colSpan={9} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No bookings found.</td>
-              </tr>
+              <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No bookings found.</div>
             ) : paginated.map((b, i) => (
-              <tr key={i}
-                style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-              >
-                <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{b.id}</td>
-                <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.customer}</td>
-                <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.partner}</td>
-                <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.service}</td>
-                <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", whiteSpace: "nowrap" }}>{b.date}</td>
-                <td style={{ padding: "13px 16px" }}><OrderBadge status={b.orderStatus} /></td>
-                <td style={{ padding: "13px 16px" }}><PaymentBadge status={b.payment} /></td>
-                <td style={{ padding: "13px 16px", color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
-                <td style={{ padding: "13px 16px" }}>
+              <div key={i} style={{
+                background: "#fafafa", border: "1px solid #f0f0f0",
+                borderRadius: 10, padding: 14, marginBottom: 12,
+              }}>
+                {/* Card header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{b.id}</div>
+                    <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>{b.date}</div>
+                  </div>
+                  <OrderBadge status={b.orderStatus} />
+                </div>
+
+                {/* Card body */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
+                  {[
+                    { label: "Customer", value: b.customer },
+                    { label: "Partner",  value: b.partner },
+                    { label: "Service",  value: b.service },
+                    { label: "Amount",   value: b.amount },
+                  ].map(row => (
+                    <div key={row.label}>
+                      <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 1 }}>{row.label}</div>
+                      <div style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>{row.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Card footer */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
+                  <PaymentBadge status={b.payment} />
                   <button
                     onClick={() => handleView(b)}
-                    style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "6px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
                   >
                     View
                   </button>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        ) : (
+          /* ── DESKTOP: original table, zero changes ── */
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+                {["Booking ID", "Customer", "Partner", "Service", "Date", "Order status", "Payment", "Amount", "Action"].map(h => (
+                  <th key={h} style={{ padding: "11px 16px", textAlign: "left", color: "#9ca3af", fontWeight: 500, fontSize: 12, whiteSpace: "nowrap" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {paginated.length === 0 ? (
+                <tr>
+                  <td colSpan={9} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No bookings found.</td>
+                </tr>
+              ) : paginated.map((b, i) => (
+                <tr key={i}
+                  style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                >
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{b.id}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.customer}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.partner}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.service}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", whiteSpace: "nowrap" }}>{b.date}</td>
+                  <td style={{ padding: "13px 16px" }}><OrderBadge status={b.orderStatus} /></td>
+                  <td style={{ padding: "13px 16px" }}><PaymentBadge status={b.payment} /></td>
+                  <td style={{ padding: "13px 16px", color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
+                  <td style={{ padding: "13px 16px" }}>
+                    <button
+                      onClick={() => handleView(b)}
+                      style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
-        {/* Pagination */}
+        {/* Pagination — original, zero changes */}
         <div style={{
           padding: "12px 20px", borderTop: "1px solid #f3f4f6",
           display: "flex", justifyContent: "flex-end", alignItems: "center",
-          gap: 14, fontSize: 12, color: "#6b7280"
+          gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap",
         }}>
           <span>Rows per page:</span>
           <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 24px 3px 8px" }}>

@@ -1,5 +1,17 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// ── RESPONSIVE HOOK ───────────────────────────────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const ALL_TRANSACTIONS_DATA = [
@@ -27,30 +39,29 @@ function StatusBadge({ status }) {
   };
   const s = map[status] || { bg: "#f1f5f9", color: "#64748b" };
   return (
-    <span style={{ display: "inline-block", fontSize: 12, fontWeight: 500, color: s.color, background: s.bg,  borderRadius: 5 }}>
+    <span style={{ display: "inline-block", fontSize: 12, fontWeight: 500, color: s.color, background: s.bg, borderRadius: 5 }}>
       {status}
     </span>
   );
 }
 
 // ── DETAIL PAGE ───────────────────────────────────────────────────────────────
-function TransactionDetailPage({ txn, onBack }) {
-  const [markedPaid, setMarkedPaid] = useState(false);
+function TransactionDetailPage({ txn, onBack, isMobile }) {
+  const [markedPaid, setMarkedPaid]     = useState(false);
   const [refundIssued, setRefundIssued] = useState(false);
 
-  // label : value row used inside both panels
   const InfoRow = ({ label, value, valueStyle, bold }) => (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
-      <span style={{ fontSize: 13, color: "#6b7280", flexShrink: 0, minWidth: 160 }}>{label}</span>
+      <span style={{ fontSize: 13, color: "#6b7280", flexShrink: 0, minWidth: isMobile ? 120 : 160 }}>{label}</span>
       <span style={{ fontSize: 13, color: "#111", fontWeight: bold ? 700 : 500, textAlign: "right", ...valueStyle }}>{value}</span>
     </div>
   );
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "26px 30px" }}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "26px 30px" }}>
 
       {/* Header */}
-      <h1 style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 700, color: "#111" }}>
+      <h1 style={{ margin: "0 0 4px", fontSize: isMobile ? 17 : 20, fontWeight: 700, color: "#111" }}>
         Transaction Details - {txn.id}
       </h1>
       <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 24 }}>
@@ -61,27 +72,24 @@ function TransactionDetailPage({ txn, onBack }) {
         <span style={{ color: "#2563eb" }}>{txn.id}</span>
       </div>
 
-      {/* Two-column top row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
+      {/* Two-column on desktop, single column on mobile */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: 16,
+        alignItems: "start",
+      }}>
 
-        {/* LEFT — Booking Information */}
+        {/* LEFT — Booking Information + Admin Actions */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
             <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 4 }}>Booking Information</div>
             <div style={{ height: 1, background: "#f3f4f6", margin: "10px 0 4px" }} />
-
-            <InfoRow label="Date & Time:"     value={txn.datetime} />
-            <InfoRow label="Transaction ID:"  value={txn.id} />
-            <InfoRow label="Customer:"        value={txn.customer} />
-            <InfoRow label="Partner:"         value={txn.partner} />
-            <InfoRow label="Service:"         value={txn.service} />
-            <InfoRow
-              label="Status:"
-              value=""
-              valueStyle={{}}
-              bold={false}
-            >
-            </InfoRow>
+            <InfoRow label="Date & Time:"    value={txn.datetime} />
+            <InfoRow label="Transaction ID:" value={txn.id} />
+            <InfoRow label="Customer:"       value={txn.customer} />
+            <InfoRow label="Partner:"        value={txn.partner} />
+            <InfoRow label="Service:"        value={txn.service} />
             {/* Custom status row */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0" }}>
               <span style={{ fontSize: 13, color: "#6b7280" }}>Status:</span>
@@ -92,14 +100,15 @@ function TransactionDetailPage({ txn, onBack }) {
           {/* Admin Actions */}
           <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
             <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 14 }}>Admin Actions</div>
-            <div style={{ display: "flex", gap: 10 }}>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <button
                 onClick={() => setMarkedPaid(true)}
                 style={{
                   background: markedPaid ? "#22c55e" : "#111",
                   color: "#fff", border: "none", borderRadius: 7,
                   padding: "8px 18px", fontSize: 13, fontWeight: 600,
-                  cursor: "pointer", transition: "background 0.2s"
+                  cursor: "pointer", transition: "background 0.2s",
+                  flex: isMobile ? "1 1 auto" : "0 0 auto",
                 }}
               >
                 {markedPaid ? "Paid to Partner ✓" : "Mark as Paid to Partner"}
@@ -111,7 +120,8 @@ function TransactionDetailPage({ txn, onBack }) {
                   color: refundIssued ? "#22c55e" : "#374151",
                   border: `1px solid ${refundIssued ? "#22c55e" : "#e5e7eb"}`,
                   borderRadius: 7, padding: "8px 18px", fontSize: 13,
-                  fontWeight: 500, cursor: "pointer", transition: "all 0.2s"
+                  fontWeight: 500, cursor: "pointer", transition: "all 0.2s",
+                  flex: isMobile ? "1 1 auto" : "0 0 auto",
                 }}
               >
                 {refundIssued ? "Refund Issued ✓" : "Issue Refund"}
@@ -125,40 +135,33 @@ function TransactionDetailPage({ txn, onBack }) {
           <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 4 }}>Payment Details</div>
           <div style={{ height: 1, background: "#f3f4f6", margin: "10px 0 4px" }} />
 
-          {/* Payment Method row */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Payment Method</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.method}</span>
           </div>
 
-          {/* Payment Reference — blue value */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Payment Reference</span>
             <span style={{ fontSize: 13, color: "#2563eb", fontWeight: 500 }}>{txn.paymentRef}</span>
           </div>
 
-          {/* Spacer gap */}
           <div style={{ height: 10 }} />
 
-          {/* Service Amount */}
           <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Service Amount:</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.serviceAmount}</span>
           </div>
 
-          {/* Platform Commission */}
           <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Platform Commission (20%):</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.commission}</span>
           </div>
 
-          {/* Taxes */}
           <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Taxes (GST 18%):</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.taxes}</span>
           </div>
 
-          {/* Partner Payout — bold */}
           <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0 4px" }}>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 700 }}>Partner Payout:</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 700 }}>{txn.partnerPayout}</span>
@@ -171,7 +174,8 @@ function TransactionDetailPage({ txn, onBack }) {
 
 // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export default function AllTransactions() {
-  const [search, setSearch]             = useState("");
+  const isMobile = useIsMobile();
+  const [search, setSearch]           = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedTxn, setSelectedTxn]   = useState(null);
   const [rowsPerPage, setRowsPerPage]   = useState(10);
@@ -191,35 +195,40 @@ export default function AllTransactions() {
   const paginated  = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   if (selectedTxn) {
-    return <TransactionDetailPage txn={selectedTxn} onBack={handleBack} />;
+    return <TransactionDetailPage txn={selectedTxn} onBack={handleBack} isMobile={isMobile} />;
   }
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "28px 32px"}}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
 
       {/* Title row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
-        <h1 style={{ margin: 0,  color: "#111" }}>All Transactions</h1>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22, flexWrap: "wrap", gap: 10 }}>
+        <h1 style={{ margin: 0, color: "#111", fontSize: isMobile ? 18 : 24 }}>All Transactions</h1>
         <div style={{ display: "flex", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px", fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500 }}>
             All
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#111", borderRadius: 7, padding: "6px 14px", fontSize: 13, color: "#fff", cursor: "pointer", fontWeight: 600 }}>
-            Export CSV
+            {isMobile ? "CSV" : "Export CSV"}
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
           </div>
         </div>
       </div>
 
       {/* Stat cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 22 }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr",
+        gap: isMobile ? 10 : 14,
+        marginBottom: 22,
+      }}>
         {[
           { label: "Total Revenue",     value: "₹1,33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 6 }}>↑37%</span> },
           { label: "Pending Payments",  value: "₹1,33,345", extra: null },
           { label: "Platform Earnings", value: "₹33,345",   extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 6 }}>↑37%</span> },
         ].map(c => (
-          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 22px" }}>
+          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px 16px" : "18px 22px" }}>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{c.label}</div>
             <div style={{ display: "flex", alignItems: "baseline" }}>
               <span style={{ fontSize: 20, fontWeight: 500, color: "#111", letterSpacing: "-0.5px" }}>{c.value}</span>
@@ -233,11 +242,17 @@ export default function AllTransactions() {
       <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, overflow: "hidden" }}>
 
         {/* Controls */}
-        <div style={{ padding: "16px 20px", borderBottom: "1px solid #f3f4f6" }}>
+        <div style={{ padding: isMobile ? "14px" : "16px 20px", borderBottom: "1px solid #f3f4f6" }}>
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>All Transactions</div>
-          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", background: "#fafafa", minWidth: 200 }}>
+            {/* Search — full width on mobile */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
+              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
+              flex: isMobile ? "1 1 100%" : "0 0 auto",
+              minWidth: isMobile ? 0 : 200,
+            }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
@@ -245,15 +260,16 @@ export default function AllTransactions() {
                 value={search}
                 onChange={e => { setSearch(e.target.value); setPage(1); }}
                 placeholder="Search"
-                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", width: 140 }}
+                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", width: isMobile ? "100%" : 140 }}
               />
             </div>
 
-            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff" }}>
+            {/* Status filter */}
+            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff", flex: isMobile ? "1 1 auto" : "0 0 auto" }}>
               <select
                 value={statusFilter}
                 onChange={e => { setStatusFilter(e.target.value); setPage(1); }}
-                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", cursor: "pointer", appearance: "none" }}
+                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", cursor: "pointer", appearance: "none", width: "100%" }}
               >
                 <option value="All">Status (All)</option>
                 <option value="Success">Success</option>
@@ -266,63 +282,119 @@ export default function AllTransactions() {
               </svg>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer" }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              MM/DD/YYYY
-            </div>
+            {/* Date picker — desktop only */}
+            {!isMobile && (
+              <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer" }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                MM/DD/YYYY
+              </div>
+            )}
 
-            <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            <button style={{
+              background: "#111", color: "#fff", border: "none", borderRadius: 7,
+              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
+              flex: isMobile ? "1 1 auto" : "0 0 auto",
+            }}>
               Filter
             </button>
           </div>
         </div>
 
-        {/* Table */}
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
-              {["Transa. ID", "Date & Time", "Customer", "Partner", "Service", "Amount", "Status", "Method", "Action"].map(h => (
-                <th key={h} style={{ padding: "11px 14px", textAlign: "left", color: "#9ca3af", fontWeight: 500, fontSize: 12, whiteSpace: "nowrap" }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
+        {/* ── MOBILE: transaction cards ── */}
+        {isMobile ? (
+          <div style={{ padding: "10px 14px" }}>
             {paginated.length === 0 ? (
-              <tr><td colSpan={9} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No transactions found.</td></tr>
+              <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No transactions found.</div>
             ) : paginated.map((t, i) => (
-              <tr key={i}
-                style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-              >
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{t.id}</td>
-                <td style={{ padding: "13px 14px", fontSize: 12, color: "#6b7280", whiteSpace: "nowrap" }}>{t.datetime}</td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.customer}</td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.partner}</td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", maxWidth: 160 }}>{t.service}</td>
-                <td style={{ padding: "13px 14px",color: "#111", whiteSpace: "nowrap" }}>{t.amount}</td>
-                <td style={{ padding: "13px 14px" }}><StatusBadge status={t.status} /></td>
-                <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.method}</td>
-                <td style={{ padding: "13px 14px" }}>
+              <div key={i} style={{
+                background: "#fafafa", border: "1px solid #f0f0f0",
+                borderRadius: 10, padding: 14, marginBottom: 12,
+              }}>
+                {/* Card header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{t.id}</div>
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{t.datetime}</div>
+                  </div>
+                  <StatusBadge status={t.status} />
+                </div>
+
+                {/* Card body — 2-col grid */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
+                  {[
+                    { label: "Customer", value: t.customer },
+                    { label: "Partner",  value: t.partner },
+                    { label: "Service",  value: t.service },
+                    { label: "Method",   value: t.method },
+                  ].map(row => (
+                    <div key={row.label}>
+                      <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 1 }}>{row.label}</div>
+                      <div style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>{row.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Card footer */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: "#111" }}>{t.amount}</span>
                   <button
                     onClick={() => handleView(t)}
-                    style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "6px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
                   >
                     View
                   </button>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        ) : (
+          /* ── DESKTOP: original table, zero changes ── */
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+                {["Transa. ID", "Date & Time", "Customer", "Partner", "Service", "Amount", "Status", "Method", "Action"].map(h => (
+                  <th key={h} style={{ padding: "11px 14px", textAlign: "left", color: "#9ca3af", fontWeight: 500, fontSize: 12, whiteSpace: "nowrap" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {paginated.length === 0 ? (
+                <tr><td colSpan={9} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No transactions found.</td></tr>
+              ) : paginated.map((t, i) => (
+                <tr key={i}
+                  style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                >
+                  <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{t.id}</td>
+                  <td style={{ padding: "13px 14px", fontSize: 12, color: "#6b7280", whiteSpace: "nowrap" }}>{t.datetime}</td>
+                  <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.customer}</td>
+                  <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.partner}</td>
+                  <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151", maxWidth: 160 }}>{t.service}</td>
+                  <td style={{ padding: "13px 14px", color: "#111", whiteSpace: "nowrap" }}>{t.amount}</td>
+                  <td style={{ padding: "13px 14px" }}><StatusBadge status={t.status} /></td>
+                  <td style={{ padding: "13px 14px", fontSize: 13, color: "#374151" }}>{t.method}</td>
+                  <td style={{ padding: "13px 14px" }}>
+                    <button
+                      onClick={() => handleView(t)}
+                      style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
-        {/* Pagination */}
-        <div style={{ padding: "12px 20px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280" }}>
+        {/* Pagination — original, zero changes */}
+        <div style={{ padding: "12px 20px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap" }}>
           <span>Rows per page:</span>
           <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 24px 3px 8px" }}>
             <select
