@@ -35,15 +35,38 @@ function StatusBadge({ status }) {
 
 // ── CREATE REFUND MODAL ───────────────────────────────────────────────────────
 function CreateRefundModal({ onClose }) {
-  const [form, setForm] = useState({ type: "Partner", mobile: "+91 9876543210", reason: "Service Cancelled", price: "$100" });
+  const isMobile = useIsMobile();
+  const [form, setForm] = useState({ type: "Partner", mobile: "+91 9876543210", reason: "Service Cancelled", price: "₹100" });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
-  return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.35)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ background: "#fff", borderRadius: 12, padding: "28px 28px 24px", width: 440, boxShadow: "0 20px 60px rgba(0,0,0,0.15)", position: "relative" }}>
+  // Prevent background scroll when modal open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
 
+  return (
+    <div
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      style={{
+        position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 1000,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: isMobile ? "16px" : "0",
+      }}
+    >
+      <div style={{
+        background: "#fff", borderRadius: 12,
+        padding: isMobile ? "24px 20px 20px" : "28px 28px 24px",
+        width: isMobile ? "100%" : 440,
+        maxWidth: "100%",
+        boxShadow: "0 20px 60px rgba(0,0,0,0.18)",
+        position: "relative",
+      }}>
         {/* Close */}
-        <button onClick={onClose} style={{ position: "absolute", top: 14, right: 16, background: "none", border: "none", fontSize: 18, color: "#9ca3af", cursor: "pointer", lineHeight: 1 }}>×</button>
+        <button onClick={onClose} style={{
+          position: "absolute", top: 14, right: 16, background: "none", border: "none",
+          fontSize: 22, color: "#9ca3af", cursor: "pointer", lineHeight: 1,
+        }}>×</button>
 
         <div style={{ fontWeight: 700, fontSize: 16, color: "#111", marginBottom: 20 }}>Create Refund</div>
 
@@ -52,11 +75,17 @@ function CreateRefundModal({ onClose }) {
           <label style={{ fontSize: 12, color: "#374151", fontWeight: 500, display: "block", marginBottom: 6 }}>Customer/ Partner</label>
           <div style={{ position: "relative" }}>
             <select value={form.type} onChange={e => set("type", e.target.value)}
-              style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 8, padding: "10px 36px 10px 14px", fontSize: 14, color: "#111", background: "#fff", appearance: "none", outline: "none", cursor: "pointer" }}>
+              style={{
+                width: "100%", border: "1px solid #e5e7eb", borderRadius: 8,
+                padding: "10px 36px 10px 14px", fontSize: 14, color: "#111",
+                background: "#fff", appearance: "none", outline: "none", cursor: "pointer",
+                boxSizing: "border-box",
+              }}>
               <option>Partner</option>
               <option>Customer</option>
             </select>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round" style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round"
+              style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </div>
@@ -85,7 +114,10 @@ function CreateRefundModal({ onClose }) {
 
         {/* Submit */}
         <button onClick={onClose}
-          style={{ width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "12px 0", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+          style={{
+            width: "100%", background: "#111", color: "#fff", border: "none",
+            borderRadius: 8, padding: "12px 0", fontSize: 14, fontWeight: 700, cursor: "pointer",
+          }}>
           Issue Refund
         </button>
       </div>
@@ -94,29 +126,40 @@ function CreateRefundModal({ onClose }) {
 }
 
 // ── REFUND DETAIL PAGE ────────────────────────────────────────────────────────
-function RefundDetailPage({ refund, onBack }) {
+function RefundDetailPage({ refund, onBack, isMobile }) {
   const [approved, setApproved] = useState(false);
   const [cancelled, setCancelled] = useState(false);
 
   const InfoRow = ({ label, value, blue }) => (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
-      <span style={{ fontSize: 13, color: "#6b7280", minWidth: 170, flexShrink: 0 }}>{label}</span>
-      <span style={{ fontSize: 13, color: blue ? "#2563eb" : "#111", fontWeight: 500, textAlign: "right" }}>{value}</span>
+    <div style={{
+      display: "flex", justifyContent: "space-between", alignItems: "center",
+      padding: "9px 0", borderBottom: "1px solid #f3f4f6",
+      flexWrap: isMobile ? "wrap" : "nowrap", gap: isMobile ? 2 : 0,
+    }}>
+      <span style={{ fontSize: 13, color: "#6b7280", minWidth: isMobile ? "auto" : 170, flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: 13, color: blue ? "#2563eb" : "#111", fontWeight: 500, textAlign: "right", wordBreak: "break-all" }}>{value}</span>
     </div>
   );
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "26px 30px"}}>
-      <h1 style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 700, color: "#111" }}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "26px 30px" }}>
+      <h1 style={{ margin: "0 0 4px", fontSize: isMobile ? 17 : 20, fontWeight: 700, color: "#111" }}>
         Refund Details - {refund.transId}
       </h1>
-      <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 24 }}>
-        <span style={{ color: "#2563eb", cursor: "pointer" }}>Admin</span>{" / "}
-        <span onClick={onBack} style={{ color: "#2563eb", cursor: "pointer" }}>Refund Management</span>{" / "}
+      <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 24, flexWrap: "wrap", display: "flex", gap: 2 }}>
+        <span style={{ color: "#2563eb", cursor: "pointer" }}>Admin</span>
+        <span>{" / "}</span>
+        <span onClick={onBack} style={{ color: "#2563eb", cursor: "pointer" }}>Refund Management</span>
+        <span>{" / "}</span>
         <span style={{ color: "#2563eb" }}>{refund.transId}</span>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: 16,
+        alignItems: "start",
+      }}>
 
         {/* LEFT */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -139,13 +182,14 @@ function RefundDetailPage({ refund, onBack }) {
           {/* Admin Actions */}
           <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
             <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 14 }}>Admin Actions</div>
-            <div style={{ display: "flex", gap: 10 }}>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <button
                 onClick={() => { setApproved(true); setCancelled(false); }}
                 style={{
                   background: approved ? "#22c55e" : "#111", color: "#fff",
                   border: "none", borderRadius: 7, padding: "8px 20px",
-                  fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "background 0.2s"
+                  fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "background 0.2s",
+                  flex: isMobile ? "1 1 auto" : "0 0 auto",
                 }}>
                 {approved ? "Refund Approved ✓" : "Approve Refund"}
               </button>
@@ -156,7 +200,8 @@ function RefundDetailPage({ refund, onBack }) {
                   color: cancelled ? "#ef4444" : "#374151",
                   border: `1px solid ${cancelled ? "#ef4444" : "#e5e7eb"}`,
                   borderRadius: 7, padding: "8px 20px",
-                  fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.2s"
+                  fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.2s",
+                  flex: isMobile ? "1 1 auto" : "0 0 auto",
                 }}>
                 {cancelled ? "Refund Cancelled ✓" : "Cancel Refund"}
               </button>
@@ -203,19 +248,19 @@ function RefundTable({ data, showPartnerCol, onView }) {
   const paginated  = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   const headers = showPartnerCol
-    ? ["Refund ID", "Trans. ID", "Date Issued", "Parner", "Service", "Refund Amount", "Status", "Reason", "Action"]
+    ? ["Refund ID", "Trans. ID", "Date Issued", "Partner", "Service", "Refund Amount", "Status", "Reason", "Action"]
     : ["Refund ID", "Trans. ID", "Date Issued", "Customer", "Partner", "Service", "Refund Amount", "Status", "Reason", "Action"];
 
   return (
     <>
       {/* Controls */}
-      <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 16 }}>
+      <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 16, flexWrap: isMobile ? "wrap" : "nowrap" }}>
         <div style={{
-              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
-              flex: isMobile ? "1 1 100%" : "0 0 auto",
-              minWidth: isMobile ? 0 : 200,
-            }}>
+          display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
+          borderRadius: 7, padding: "7px 12px", background: "#fafafa",
+          flex: isMobile ? "1 1 100%" : "0 0 auto",
+          minWidth: isMobile ? 0 : 200,
+        }}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
@@ -235,193 +280,140 @@ function RefundTable({ data, showPartnerCol, onView }) {
           </svg>
         </div>
 
-       {!isMobile && (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: 7,
-      border: "1px solid #e5e7eb",
-      borderRadius: 7,
-      padding: "7px 12px",
-      fontSize: 13,
-      color: "#bbb",
-      background: "#fafafa",
-      cursor: "pointer",
-      whiteSpace: "nowrap"
-    }}
-  >
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#bbb"
-      strokeWidth="2"
-      strokeLinecap="round"
-    >
-      <rect x="3" y="4" width="18" height="18" rx="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-    </svg>
-
-    MM/DD/YYYY
-  </div>
-)}
+        {!isMobile && (
+          <div style={{
+            display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb",
+            borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb",
+            background: "#fafafa", cursor: "pointer", whiteSpace: "nowrap",
+          }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            MM/DD/YYYY
+          </div>
+        )}
 
         <button style={{
-              background: "#111", color: "#fff", border: "none", borderRadius: 7,
-              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-              flex: isMobile ? "1 1 auto" : "0 0 auto",
-            }}>
+          background: "#111", color: "#fff", border: "none", borderRadius: 7,
+          padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
+          flex: isMobile ? "1 1 auto" : "0 0 auto",
+        }}>
           Filter
         </button>
       </div>
 
       {/* Table */}
-     {isMobile ? (
-  <div style={{ padding: "10px 14px" }}>
-    {paginated.length === 0 ? (
-      <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
-        No refunds found.
-      </div>
-    ) : paginated.map((r, i) => (
-      <div key={i} style={{
-        background: "#fafafa",
-        border: "1px solid #f0f0f0",
-        borderRadius: 10,
-        padding: 14,
-        marginBottom: 12,
-      }}>
-        
-        {/* Card header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{r.id}</div>
-            <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{r.dateIssued}</div>
-          </div>
-          <StatusBadge status={r.status} />
-        </div>
+      {isMobile ? (
+        <div style={{ padding: "4px 0" }}>
+          {paginated.length === 0 ? (
+            <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
+              No refunds found.
+            </div>
+          ) : paginated.map((r, i) => (
+            <div key={i} style={{
+              background: "#fafafa", border: "1px solid #f0f0f0",
+              borderRadius: 10, padding: 14, marginBottom: 12,
+            }}>
+              {/* Card header */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{r.id}</div>
+                  <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{r.dateIssued}</div>
+                </div>
+                <StatusBadge status={r.status} />
+              </div>
 
-        {/* Card body */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
-          {[
-            { label: "Transaction", value: r.transId },
-            { label: "Customer", value: r.customer },
-            { label: "Partner", value: r.partner },
-            { label: "Service", value: r.service },
-            { label: "Reason", value: r.reason },
-          ].map(row => (
-            <div key={row.label}>
-              <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 1 }}>{row.label}</div>
-              <div style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>{row.value}</div>
+              {/* Card body */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
+                {[
+                  { label: "Transaction", value: r.transId },
+                  { label: "Customer",    value: r.customer },
+                  { label: "Partner",     value: r.partner },
+                  { label: "Service",     value: r.service },
+                  { label: "Reason",      value: r.reason },
+                ].map(row => (
+                  <div key={row.label}>
+                    <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 1 }}>{row.label}</div>
+                    <div style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>{row.value}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Card footer */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#111" }}>{r.refundAmount}</span>
+                <button
+                  onClick={() => onView(r)}
+                  style={{
+                    background: "#111", color: "#fff", border: "none", borderRadius: 6,
+                    padding: "6px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer",
+                  }}>
+                  View
+                </button>
+              </div>
             </div>
           ))}
         </div>
-
-        {/* Card footer */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
-          <span style={{ fontSize: 14, fontWeight: 700, color: "#111" }}>
-            {r.refundAmount}
-          </span>
-
-          <button 
-            style={{
-              background: "#111",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              padding: "6px 18px",
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: "pointer"
-            }}
-          >
-            View
-          </button>
-        </div>
-      </div>
-    ))}
-  </div>
-) : (
-
-  /* Desktop table — unchanged */
-  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-    <thead>
-      <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
-        {headers.map(h => (
-          <th key={h} style={{
-            padding: "10px 12px",
-            textAlign: "left",
-            color: "#9ca3af",
-            fontWeight: 500,
-            fontSize: 12,
-            whiteSpace: "nowrap"
-          }}>
-            {h}
-          </th>
-        ))}
-      </tr>
-    </thead>
-
-    <tbody>
-      {paginated.length === 0 ? (
-        <tr>
-          <td colSpan={headers.length} style={{
-            padding: 36,
-            textAlign: "center",
-            color: "#9ca3af",
-            fontSize: 13
-          }}>
-            No refunds found.
-          </td>
-        </tr>
-      ) : paginated.map((r, i) => (
-        <tr
-          key={i}
-          style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
-          onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
-          onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-        >
-          <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{r.id}</td>
-          <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{r.transId}</td>
-          <td style={{ padding: "12px 12px", fontSize: 12, color: "#6b7280", whiteSpace: "nowrap" }}>{r.dateIssued}</td>
-          {!showPartnerCol && (
-            <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{r.customer}</td>
-          )}
-          <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{r.partner}</td>
-          <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151", maxWidth: 130 }}>{r.service}</td>
-          <td style={{ padding: "12px 12px", color: "#111", whiteSpace: "nowrap" }}>{r.refundAmount}</td>
-          <td style={{ padding: "12px 12px" }}>
-            <StatusBadge status={r.status} />
-          </td>
-          <td style={{ padding: "12px 12px", fontSize: 12, color: "#6b7280", maxWidth: 150 }}>{r.reason}</td>
-          <td style={{ padding: "12px 12px" }}>
-            <button
-              style={{
-                background: "#111",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                padding: "5px 16px",
-                fontSize: 12,
-                fontWeight: 600,
-                cursor: "pointer"
-              }}
-            >
-              View
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-
-)}
+      ) : (
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+              {headers.map(h => (
+                <th key={h} style={{ padding: "10px 12px", textAlign: "left", color: "#9ca3af", fontWeight: 500, fontSize: 12, whiteSpace: "nowrap" }}>
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {paginated.length === 0 ? (
+              <tr>
+                <td colSpan={headers.length} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
+                  No refunds found.
+                </td>
+              </tr>
+            ) : paginated.map((r, i) => (
+              <tr
+                key={i}
+                style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
+                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+              >
+                <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{r.id}</td>
+                <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{r.transId}</td>
+                <td style={{ padding: "12px 12px", fontSize: 12, color: "#6b7280", whiteSpace: "nowrap" }}>{r.dateIssued}</td>
+                {!showPartnerCol && (
+                  <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{r.customer}</td>
+                )}
+                <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151" }}>{r.partner}</td>
+                <td style={{ padding: "12px 12px", fontSize: 13, color: "#374151", maxWidth: 130 }}>{r.service}</td>
+                <td style={{ padding: "12px 12px", color: "#111", whiteSpace: "nowrap" }}>{r.refundAmount}</td>
+                <td style={{ padding: "12px 12px" }}>
+                  <StatusBadge status={r.status} />
+                </td>
+                <td style={{ padding: "12px 12px", fontSize: 12, color: "#6b7280", maxWidth: 150 }}>{r.reason}</td>
+                <td style={{ padding: "12px 12px" }}>
+                  {/* ✅ FIX: onClick now calls onView(r) */}
+                  <button
+                    onClick={() => onView(r)}
+                    style={{
+                      background: "#111", color: "#fff", border: "none", borderRadius: 6,
+                      padding: "5px 16px", fontSize: 12, fontWeight: 600, cursor: "pointer",
+                    }}>
+                    View
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
       {/* Pagination */}
-      <div style={{ padding: "12px 0", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280" }}>
+      <div style={{ padding: "12px 0", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap" }}>
         <span>Rows per page:</span>
         <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 24px 3px 8px" }}>
           <select value={rowsPerPage} onChange={e => { setRowsPerPage(Number(e.target.value)); setPage(1); }}
@@ -449,9 +441,9 @@ function RefundTable({ data, showPartnerCol, onView }) {
 // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export default function RefundManagement() {
   const isMobile = useIsMobile();
-  const [activeTab, setActiveTab]       = useState("all");
+  const [activeTab, setActiveTab]           = useState("all");
   const [selectedRefund, setSelectedRefund] = useState(null);
-  const [showModal, setShowModal]       = useState(false);
+  const [showModal, setShowModal]           = useState(false);   // ✅ used to open modal
 
   const handleView = (r) => setSelectedRefund(r);
   const handleBack = ()  => setSelectedRefund(null);
@@ -459,19 +451,24 @@ export default function RefundManagement() {
   const customerRefunds = BASE_REFUNDS.filter(r => r.type === "customer");
   const partnerRefunds  = BASE_REFUNDS.filter(r => r.type === "partner");
 
-  const tabData = activeTab === "all" ? BASE_REFUNDS : activeTab === "customer" ? customerRefunds : partnerRefunds;
+  const tabData  = activeTab === "all" ? BASE_REFUNDS : activeTab === "customer" ? customerRefunds : partnerRefunds;
   const tabTitle = activeTab === "all" ? "All Refunds" : activeTab === "customer" ? "Customer Refunds" : "Partner Refunds";
 
-  if (selectedRefund) return <RefundDetailPage refund={selectedRefund} onBack={handleBack}  isMobile={isMobile} />;
+  if (selectedRefund) return (
+    <>
+      <RefundDetailPage refund={selectedRefund} onBack={handleBack} isMobile={isMobile} />
+    </>
+  );
 
   return (
     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
 
-      
+      {/* ✅ Modal rendered here, controlled by showModal state */}
+      {showModal && <CreateRefundModal onClose={() => setShowModal(false)} />}
 
       {/* Title row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
-        <h1 style={{ margin: 0,  color: "#111",fontSize: isMobile ? 18 : 24  }}>Refund Management</h1>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22, flexWrap: "wrap", gap: 10 }}>
+        <h1 style={{ margin: 0, color: "#111", fontSize: isMobile ? 18 : 24 }}>Refund Management</h1>
         <div style={{ display: "flex", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px", fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500 }}>
             All
@@ -507,8 +504,12 @@ export default function RefundManagement() {
       </div>
 
       {/* Tabs row + Create Refund button */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-        <div style={{ display: "flex", gap: 0, borderBottom: "1px solid #e5e7eb" }}>
+      <div style={{
+        display: "flex", alignItems: isMobile ? "flex-start" : "center",
+        justifyContent: "space-between", marginBottom: 20,
+        flexDirection: isMobile ? "column" : "row", gap: isMobile ? 12 : 0,
+      }}>
+        <div style={{ display: "flex", gap: 0, borderBottom: "1px solid #e5e7eb", overflowX: "auto" }}>
           {[
             { key: "all",      label: "All Refunds" },
             { key: "customer", label: "Customer Refunds" },
@@ -516,23 +517,27 @@ export default function RefundManagement() {
           ].map(tab => (
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
               style={{
-                padding: "9px 18px", background: "none", border: "none",
+                padding: "9px 18px", border: "none",
                 background: activeTab === tab.key ? "#ffffff" : "transparent",
                 cursor: "pointer",
                 color: activeTab === tab.key ? "#111" : "#6b7280",
-                marginBottom: -1, transition: "all 0.15s"
+                marginBottom: -1, transition: "all 0.15s",
+                whiteSpace: "nowrap", fontSize: 13,
               }}>
               {tab.label}
             </button>
           ))}
         </div>
 
-        <button onClick={() => setShowModal(true)}
+        {/* ✅ FIX: onClick now sets showModal to true */}
+        <button
+          onClick={() => setShowModal(true)}
           style={{
             display: "flex", alignItems: "center", gap: 6,
             background: "#111", color: "#fff", border: "none",
             borderRadius: 7, padding: "8px 18px", fontSize: 13,
-            fontWeight: 600, cursor: "pointer"
+            fontWeight: 600, cursor: "pointer",
+            alignSelf: isMobile ? "flex-start" : "auto",
           }}>
           Create Refund
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
