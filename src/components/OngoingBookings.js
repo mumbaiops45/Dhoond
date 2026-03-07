@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
+
 // ── RESPONSIVE HOOK ───────────────────────────────────────────────────────────
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -13,34 +14,30 @@ function useIsMobile() {
 }
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
+// NOTE: dates stored as YYYY-MM-DD for easy comparison with date input value
 const ONGOING_BOOKINGS_DATA = [
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", payment: "Pending", amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "Pending - Awaiting Partner Acceptance"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-22", payment: "Pending", amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "Pending - Awaiting Partner Acceptance"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B002", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-22", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B003", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-23", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-23 10:00 AM - Booking Created", "2025-03-23 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B004", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-23", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-23 10:00 AM - Booking Created", "2025-03-23 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B005", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-24", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-24 10:00 AM - Booking Created", "2025-03-24 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B006", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-24", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-24 10:00 AM - Booking Created", "2025-03-24 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B007", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-25", payment: "Pending", amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-25 10:00 AM - Booking Created", "2025-03-25 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B008", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-25", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring", serviceDescription: "Full wiring for 2BHK", serviceDuration: "4 Hours", timeline: ["2025-03-25 10:00 AM - Booking Created", "2025-03-25 10:15 AM - Assigned to Partner", "In Progress - Partner En Route"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
 ];
 
 // ── BADGE ─────────────────────────────────────────────────────────────────────
 function PaymentBadge({ status }) {
-  const styles = {
-    Paid:     { color: "#16a34a", bg: "#22c55e", textColor: "#fff" },
-    Pending:  { color: "#92400e", bg: "transparent", textColor: "#9ca3af", italic: true },
-    Refunded: { color: "#a16207", bg: "#fef9c3", textColor: "#a16207" },
-  };
-  const s = styles[status] || styles.Pending;
   if (status === "Pending") {
     return <span style={{ fontSize: 12, color: "#9ca3af", fontStyle: "italic" }}>{status}</span>;
   }
+  const styles = {
+    Paid:     { textColor: "#fff",     bg: "#22c55e" },
+    Refunded: { textColor: "#a16207",  bg: "#fef9c3" },
+  };
+  const s = styles[status] || styles.Paid;
   return (
-    <span style={{
-      display: "inline-block", fontSize: 12, fontWeight: 600,
-      color: s.textColor, background: s.bg,
-      padding: "3px 14px", borderRadius: 5,
-    }}>
+    <span style={{ display: "inline-block", fontSize: 12, fontWeight: 600, color: s.textColor, background: s.bg, padding: "3px 14px", borderRadius: 5 }}>
       {status}
     </span>
   );
@@ -65,126 +62,152 @@ function Row({ label, value, valueEl }) {
   );
 }
 
+// ── CALENDAR ICON ─────────────────────────────────────────────────────────────
+function CalendarIcon({ color = "#9ca3af" }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
 // ── DETAIL PAGE ───────────────────────────────────────────────────────────────
-// function BookingDetailPage({ booking, onBack }) {
-//   return (
-//     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: "26px 30px" }}>
-
-//       <h1 style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 700, color: "#111" }}>
-//         Booking Details - {booking.id}
-//       </h1>
-//       <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 22 }}>
-//         <span style={{ color: "#2563eb", cursor: "pointer" }}>Admin</span>
-//         {" / "}
-//         <span onClick={onBack} style={{ color: "#2563eb", cursor: "pointer" }}>Ongoing Bookings</span>
-//         {" / "}
-//         <span style={{ color: "#2563eb" }}>{booking.id}</span>
-//       </div>
-
-//       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
-
-//         {/* LEFT */}
-//         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-//           <Card title="Booking Summary">
-//             <Row label="Booking ID"     value={booking.id} />
-//             <Row label="Date"           value={booking.date} />
-//             <Row label="Status"         valueEl={<span style={{ fontSize: 13, color: "#3b82f6", fontWeight: 500 }}>In Progress</span>} />
-//             <Row label="Payment Status" valueEl={<PaymentBadge status={booking.payment} />} />
-//           </Card>
-
-//           <Card title="Service Details">
-//             <Row label="Category"    value={booking.serviceCategory} />
-//             <Row label="Service"     value={booking.serviceName} />
-//             <Row label="Description" value={booking.serviceDescription} />
-//             <Row label="Duration"    value={booking.serviceDuration} />
-//           </Card>
-
-//           <Card title="Booking Timeline">
-//             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-//               {booking.timeline.map((t, i) => (
-//                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-//                   <div style={{
-//                     width: 7, height: 7, borderRadius: "50%", marginTop: 5, flexShrink: 0,
-//                     background: i === booking.timeline.length - 1 ? "#3b82f6" : "#22c55e"
-//                   }} />
-//                   <span style={{ fontSize: 12, color: "#6b7280" }}>{t}</span>
-//                 </div>
-//               ))}
-//             </div>
-//           </Card>
-//         </div>
-
-//         {/* RIGHT */}
-//         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-//           <Card title="Customer Details">
-//             <Row label="Name"    value={booking.customer} />
-//             <Row label="Phone"   value={booking.customerPhone} />
-//             <Row label="Address" value={booking.customerAddress} />
-//           </Card>
-
-//           <Card title="Partner Details">
-//             <Row label="Name"       value={booking.partner} />
-//             <Row label="Phone"      value={booking.partnerPhone} />
-//             <Row label="Profession" value={booking.partnerProfession} />
-//             <Row label="Experience" value={booking.partnerExperience} />
-//           </Card>
-
-//           <Card title="Payment Breakdown">
-//             <Row label="Base Price"    value={booking.basePrice} />
-//             <Row label="Extra Charges" value={booking.extraCharges} />
-//             <Row label="Taxes"         value={booking.taxes} />
-//             <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
-//             <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
-//               <span style={{ fontSize: 13, fontWeight: 700, color: "#111" }}>Total Amount:</span>
-//               <span style={{ fontSize: 13, fontWeight: 700, color: "#111" }}>{booking.totalAmount}</span>
-//             </div>
-//             <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
-//             <Row label="Partner Earnings" value={booking.partnerEarnings} />
-//             <Row label="Commission"       value={booking.commission} />
-//           </Card>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+function BookingDetailPage({ booking, onBack, isMobile }) {
+  // Format date back to display format
+  const displayDate = booking.date;
+  return (
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "26px 30px" }}>
+      <h1 style={{ margin: "0 0 4px", fontSize: isMobile ? 17 : 20, fontWeight: 700, color: "#111" }}>
+        Booking Details - {booking.id}
+      </h1>
+      <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 22 }}>
+        <span style={{ color: "#2563eb", cursor: "pointer" }}>Admin</span>
+        {" / "}
+        <span onClick={onBack} style={{ color: "#2563eb", cursor: "pointer" }}>Ongoing Bookings</span>
+        {" / "}
+        <span style={{ color: "#2563eb" }}>{booking.id}</span>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, alignItems: "start" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <Card title="Booking Summary">
+            <Row label="Booking ID"     value={booking.id} />
+            <Row label="Date"           value={displayDate} />
+            <Row label="Status"         valueEl={<span style={{ fontSize: 13, color: "#3b82f6", fontWeight: 500 }}>In Progress</span>} />
+            <Row label="Payment Status" valueEl={<PaymentBadge status={booking.payment} />} />
+          </Card>
+          <Card title="Service Details">
+            <Row label="Category"    value={booking.serviceCategory} />
+            <Row label="Service"     value={booking.serviceName} />
+            <Row label="Description" value={booking.serviceDescription} />
+            <Row label="Duration"    value={booking.serviceDuration} />
+          </Card>
+          <Card title="Booking Timeline">
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {booking.timeline.map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <div style={{ width: 7, height: 7, borderRadius: "50%", marginTop: 5, flexShrink: 0, background: i === booking.timeline.length - 1 ? "#3b82f6" : "#22c55e" }} />
+                  <span style={{ fontSize: 12, color: "#6b7280" }}>{t}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <Card title="Customer Details">
+            <Row label="Name"    value={booking.customer} />
+            <Row label="Phone"   value={booking.customerPhone} />
+            <Row label="Address" value={booking.customerAddress} />
+          </Card>
+          <Card title="Partner Details">
+            <Row label="Name"       value={booking.partner} />
+            <Row label="Phone"      value={booking.partnerPhone} />
+            <Row label="Profession" value={booking.partnerProfession} />
+            <Row label="Experience" value={booking.partnerExperience} />
+          </Card>
+          <Card title="Payment Breakdown">
+            <Row label="Base Price"    value={booking.basePrice} />
+            <Row label="Extra Charges" value={booking.extraCharges} />
+            <Row label="Taxes"         value={booking.taxes} />
+            <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#111" }}>Total Amount:</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#111" }}>{booking.totalAmount}</span>
+            </div>
+            <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
+            <Row label="Partner Earnings" value={booking.partnerEarnings} />
+            <Row label="Commission"       value={booking.commission} />
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export default function OngoingBookings() {
-   const isMobile = useIsMobile();
+  const isMobile = useIsMobile();
   const [search, setSearch]               = useState("");
   const [paymentFilter, setPaymentFilter] = useState("All");
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [rowsPerPage, setRowsPerPage]     = useState(10);
   const [page, setPage]                   = useState(1);
 
+  // ── DATE FILTER STATE ──────────────────────────────────────────────────────
+  const [pendingDate, setPendingDate] = useState("");
+  const [activeDate, setActiveDate]   = useState("");
+
   const handleView = (b) => setSelectedBooking(b);
   const handleBack = ()  => setSelectedBooking(null);
 
+  const handleFilter = () => {
+    setActiveDate(pendingDate);
+    setPage(1);
+  };
+
+  const handleClearDate = () => {
+    setPendingDate("");
+    setActiveDate("");
+    setPage(1);
+  };
+
+  // ── FILTER LOGIC — includes date ───────────────────────────────────────────
   const filtered = ONGOING_BOOKINGS_DATA.filter(b => {
     const q = search.toLowerCase();
-    const matchSearch = !q || [b.id, b.customer, b.partner, b.service].some(v => v.toLowerCase().includes(q));
+    const matchSearch  = !q || [b.id, b.customer, b.partner, b.service].some(v => v.toLowerCase().includes(q));
     const matchPayment = paymentFilter === "All" || b.payment === paymentFilter;
-    return matchSearch && matchPayment;
+    const matchDate    = !activeDate || b.date === activeDate;
+    return matchSearch && matchPayment && matchDate;
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
   const paginated  = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   if (selectedBooking) {
-    return <BookingDetailPage booking={selectedBooking} onBack={handleBack} isMobile={isMobile}/>;
+    return <BookingDetailPage booking={selectedBooking} onBack={handleBack} isMobile={isMobile} />;
   }
 
+  // Shared control base style — matches Search input wrapper exactly
+  const controlBase = {
+    display: "flex",
+    alignItems: "center",
+    border: "1px solid #e5e7eb",
+    borderRadius: 7,
+    padding: "7px 12px",
+    background: "#fafafa",
+    fontSize: 13,
+    color: "#374151",
+  };
+
   return (
-    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px"}}>
+    <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
 
       {/* Title */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
-        <h1 style={{ margin: 0,fontSize: isMobile ? 18 : 24 ,  color: "#111" }}>Ongoing Bookings</h1>
-        <div style={{
-          display: "flex", alignItems: "center", gap: 5, background: "#fff",
-          border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px",
-          fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500
-        }}>
+        <h1 style={{ margin: 0, fontSize: isMobile ? 18 : 24, color: "#111" }}>Ongoing Bookings</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px", fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500 }}>
           All
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round">
             <polyline points="6 9 12 15 18 9" />
@@ -199,7 +222,7 @@ export default function OngoingBookings() {
           { label: "Completed Bookings", value: "33,253", extra: null },
           { label: "Conversion Rate",    value: "98%",    extra: null },
         ].map(c => (
-          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px 16px" : "18px 22px"}}>
+          <div key={c.label} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: isMobile ? "14px 16px" : "18px 22px" }}>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>{c.label}</div>
             <div style={{ display: "flex", alignItems: "baseline" }}>
               <span style={{ fontSize: 20, fontWeight: 500, color: "#111", letterSpacing: "-0.5px" }}>{c.value}</span>
@@ -215,13 +238,10 @@ export default function OngoingBookings() {
         {/* Controls */}
         <div style={{ padding: isMobile ? "14px" : "16px 20px", borderBottom: "1px solid #f3f4f6" }}>
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>Ongoing Bookings List</div>
-          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
 
             {/* Search */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", background: "#fafafa", flex: isMobile ? "1 1 100%" : "0 0 auto", minWidth: isMobile ? 0 : 180
-            }}>
+            <div style={{ ...controlBase, gap: 8, flex: isMobile ? "1 1 100%" : "0 0 auto", minWidth: isMobile ? 0 : 180 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
@@ -234,11 +254,11 @@ export default function OngoingBookings() {
             </div>
 
             {/* Payment Status */}
-            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff" }}>
+            <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff", flex: isMobile ? "1 1 auto" : "0 0 auto" }}>
               <select
                 value={paymentFilter}
                 onChange={e => { setPaymentFilter(e.target.value); setPage(1); }}
-                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", cursor: "pointer", appearance: "none" }}
+                style={{ border: "none", outline: "none", fontSize: 13, color: "#374151", background: "transparent", cursor: "pointer", appearance: "none", width: "100%" }}
               >
                 <option value="All">Payment Status (All)</option>
                 <option value="Paid">Paid</option>
@@ -251,190 +271,144 @@ export default function OngoingBookings() {
               </svg>
             </div>
 
-            {/* Date picker — desktop only */}
-              {!isMobile && (
-                <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer" }}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                  MM/DD/YYYY
-                </div>
-              )}
+            {/* ── DATE PICKER — desktop only ── */}
+            {!isMobile && (
+              <div style={{
+                ...controlBase,
+                gap: 7,
+                cursor: "pointer",
+                borderColor: activeDate ? "#111" : "#e5e7eb",
+                background: activeDate ? "#f9fafb" : "#fafafa",
+              }}>
+                <CalendarIcon color={activeDate ? "#374151" : "#9ca3af"} />
+                <input
+                  type="date"
+                  value={pendingDate}
+                  onChange={e => setPendingDate(e.target.value)}
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    fontSize: 13,
+                    color: pendingDate ? "#374151" : "#9ca3af",
+                    background: "transparent",
+                    cursor: "pointer",
+                    width: 110,
+                    WebkitAppearance: "none",
+                  }}
+                />
+                {(pendingDate || activeDate) && (
+                  <button
+                    onClick={handleClearDate}
+                    title="Clear date filter"
+                    style={{ border: "none", background: "none", padding: "0 2px", cursor: "pointer", color: "#9ca3af", fontSize: 15, lineHeight: 1, display: "flex", alignItems: "center" }}
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+            )}
 
-            {/* Filter */}
-            <button style={{
-              background: "#111", color: "#fff", border: "none", borderRadius: 7,
-              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer"
-            }}>
+            {/* Filter button */}
+            <button
+              onClick={handleFilter}
+              style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer", flex: isMobile ? "1 1 auto" : "0 0 auto" }}
+            >
               Filter
             </button>
+
+            {/* Active date badge */}
+            {activeDate && (
+              <span style={{ fontSize: 12, color: "#374151", background: "#f3f4f6", border: "1px solid #e5e7eb", borderRadius: 5, padding: "4px 10px", display: "flex", alignItems: "center", gap: 6 }}>
+                📅 {activeDate}
+                <button onClick={handleClearDate} style={{ border: "none", background: "none", cursor: "pointer", color: "#6b7280", fontSize: 13, lineHeight: 1, padding: 0 }}>×</button>
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Table — no Order Status column */}
-       {/* ── MOBILE: booking cards ── */}
-{isMobile ? (
-  <div style={{ padding: "10px 14px" }}>
-    {paginated.length === 0 ? (
-      <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
-        No ongoing bookings found.
-      </div>
-    ) : paginated.map((b, i) => (
-      <div
-        key={i}
-        style={{
-          background: "#fafafa",
-          border: "1px solid #f0f0f0",
-          borderRadius: 10,
-          padding: 14,
-          marginBottom: 12
-        }}
-      >
-        {/* Card header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{b.id}</div>
-            <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{b.date}</div>
+        {/* ── MOBILE: booking cards ── */}
+        {isMobile ? (
+          <div style={{ padding: "10px 14px" }}>
+            {paginated.length === 0 ? (
+              <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No ongoing bookings found.</div>
+            ) : paginated.map((b, i) => (
+              <div key={i} style={{ background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 10, padding: 14, marginBottom: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{b.id}</div>
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{b.date}</div>
+                  </div>
+                  <span style={{ fontSize: 12, color: "#f59e0b", fontWeight: 600 }}>Ongoing</span>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
+                  {[
+                    { label: "Customer", value: b.customer },
+                    { label: "Partner",  value: b.partner },
+                    { label: "Service",  value: b.service },
+                    { label: "Amount",   value: b.amount },
+                  ].map(row => (
+                    <div key={row.label}>
+                      <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 1 }}>{row.label}</div>
+                      <div style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>{row.value}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
+                  <PaymentBadge status={b.payment} />
+                  <button
+                    // onClick={() => handleView(b)}
+                    style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "6px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                  >
+                    View
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-          <span style={{ fontSize: 12, color: "#f59e0b", fontWeight: 600 }}>Ongoing</span>
-        </div>
-
-        {/* Card body */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "6px 12px",
-            marginBottom: 10
-          }}
-        >
-          {[
-            { label: "Customer", value: b.customer },
-            { label: "Partner", value: b.partner },
-            { label: "Service", value: b.service },
-            { label: "Amount", value: b.amount },
-          ].map(row => (
-            <div key={row.label}>
-              <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 1 }}>
-                {row.label}
-              </div>
-              <div style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>
-                {row.value}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Card footer */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingTop: 10,
-            borderTop: "1px solid #f0f0f0"
-          }}
-        >
-          <PaymentBadge status={b.payment} />
-
-          <button
-            style={{
-              background: "#111",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              padding: "6px 18px",
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: "pointer"
-            }}
-          >
-            View
-          </button>
-        </div>
-      </div>
-    ))}
-  </div>
-) : (
-
-  /* ── DESKTOP: original table ── */
-
-  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-    <thead>
-      <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
-        {["Booking ID", "Customer", "Partner", "Service", "Date", "Payment", "Amount", "Action"].map(h => (
-          <th
-            key={h}
-            style={{
-              padding: "11px 16px",
-              textAlign: "left",
-              color: "#9ca3af",
-              fontWeight: 500,
-              fontSize: 12,
-              whiteSpace: "nowrap"
-            }}
-          >
-            {h}
-          </th>
-        ))}
-      </tr>
-    </thead>
-
-    <tbody>
-      {paginated.length === 0 ? (
-        <tr>
-          <td colSpan={8} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>
-            No ongoing bookings found.
-          </td>
-        </tr>
-      ) : paginated.map((b, i) => (
-        <tr
-          key={i}
-          style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
-          onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
-          onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-        >
-          <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{b.id}</td>
-          <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.customer}</td>
-          <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.partner}</td>
-          <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.service}</td>
-          <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", whiteSpace: "nowrap" }}>{b.date}</td>
-          <td style={{ padding: "13px 16px" }}>
-            <PaymentBadge status={b.payment} />
-          </td>
-          <td style={{ padding: "13px 16px", color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
-          <td style={{ padding: "13px 16px" }}>
-            <button
-              style={{
-                background: "#111",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                padding: "5px 18px",
-                fontSize: 12,
-                fontWeight: 600,
-                cursor: "pointer"
-              }}
-            >
-              View
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-
-)}
+        ) : (
+          /* ── DESKTOP: table ── */
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
+                {["Booking ID", "Customer", "Partner", "Service", "Date", "Payment", "Amount", "Action"].map(h => (
+                  <th key={h} style={{ padding: "11px 16px", textAlign: "left", color: "#9ca3af", fontWeight: 500, fontSize: 12, whiteSpace: "nowrap" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {paginated.length === 0 ? (
+                <tr>
+                  <td colSpan={8} style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No ongoing bookings found.</td>
+                </tr>
+              ) : paginated.map((b, i) => (
+                <tr key={i}
+                  style={{ borderBottom: "1px solid #f9fafb", transition: "background 0.1s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#fafafa"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                >
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", fontWeight: 500 }}>{b.id}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.customer}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.partner}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151" }}>{b.service}</td>
+                  <td style={{ padding: "13px 16px", fontSize: 13, color: "#374151", whiteSpace: "nowrap" }}>{b.date}</td>
+                  <td style={{ padding: "13px 16px" }}><PaymentBadge status={b.payment} /></td>
+                  <td style={{ padding: "13px 16px", color: "#111", whiteSpace: "nowrap" }}>{b.amount}</td>
+                  <td style={{ padding: "13px 16px" }}>
+                    <button
+                      // onClick={() => handleView(b)}
+                      style={{ background: "#111", color: "#fff", border: "none", borderRadius: 6, padding: "5px 18px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
         {/* Pagination */}
-        <div style={{
-          padding: "12px 20px", borderTop: "1px solid #f3f4f6",
-          display: "flex", justifyContent: "flex-end", alignItems: "center",
-          gap: 14, fontSize: 12, color: "#6b7280"
-        }}>
+        <div style={{ padding: "12px 20px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap" }}>
           <span>Rows per page:</span>
           <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 24px 3px 8px" }}>
             <select

@@ -13,16 +13,16 @@ function useIsMobile() {
   return isMobile;
 }
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// ── DATA — datetime keeps original format, dateOnly added for filtering ────────
 const ALL_TRANSACTIONS_DATA = [
-  { id: "TXN001", datetime: "2025-08-12, 03:45 PM", customer: "John Smith",   partner: "Rajesh Kumar", service: "Carpenter - Furniture Repair", amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-456795", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-123456", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-234567", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Refunded", method: "UPI", paymentRef: "UPI REF-345678", serviceAmount: "₹1,200", commission: "₹0",   taxes: "₹0",   partnerPayout: "₹0"   },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-456789", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-567890", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-678901", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
-  { id: "TXN001", datetime: "08/09/2025, 12:34 PM", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-789012", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN001", datetime: "2025-08-12, 03:45 PM", dateOnly: "2025-08-12", customer: "John Smith",   partner: "Rajesh Kumar", service: "Carpenter - Furniture Repair", amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-456795", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN002", datetime: "2025-08-09, 12:34 PM", dateOnly: "2025-08-09", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-123456", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN003", datetime: "2025-08-09, 12:34 PM", dateOnly: "2025-08-09", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-234567", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN004", datetime: "2025-08-09, 12:34 PM", dateOnly: "2025-08-09", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Refunded", method: "UPI", paymentRef: "UPI REF-345678", serviceAmount: "₹1,200", commission: "₹0",   taxes: "₹0",   partnerPayout: "₹0"   },
+  { id: "TXN005", datetime: "2025-08-10, 12:34 PM", dateOnly: "2025-08-10", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Success",  method: "UPI", paymentRef: "UPI REF-456789", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN006", datetime: "2025-08-10, 12:34 PM", dateOnly: "2025-08-10", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-567890", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN007", datetime: "2025-08-11, 12:34 PM", dateOnly: "2025-08-11", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-678901", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
+  { id: "TXN008", datetime: "2025-08-11, 12:34 PM", dateOnly: "2025-08-11", customer: "Vikas Sharma", partner: "Rajesh Kumar", service: "Carpenter",                    amount: "₹1,200", status: "Pending",  method: "UPI", paymentRef: "UPI REF-789012", serviceAmount: "₹1,200", commission: "₹240", taxes: "₹216", partnerPayout: "₹744" },
 ];
 
 // ── STATUS BADGE ──────────────────────────────────────────────────────────────
@@ -45,6 +45,18 @@ function StatusBadge({ status }) {
   );
 }
 
+// ── CALENDAR ICON ─────────────────────────────────────────────────────────────
+function CalendarIcon({ color = "#9ca3af" }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
 // ── DETAIL PAGE ───────────────────────────────────────────────────────────────
 function TransactionDetailPage({ txn, onBack, isMobile }) {
   const [markedPaid, setMarkedPaid]     = useState(false);
@@ -59,8 +71,6 @@ function TransactionDetailPage({ txn, onBack, isMobile }) {
 
   return (
     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "26px 30px" }}>
-
-      {/* Header */}
       <h1 style={{ margin: "0 0 4px", fontSize: isMobile ? 17 : 20, fontWeight: 700, color: "#111" }}>
         Transaction Details - {txn.id}
       </h1>
@@ -72,15 +82,9 @@ function TransactionDetailPage({ txn, onBack, isMobile }) {
         <span style={{ color: "#2563eb" }}>{txn.id}</span>
       </div>
 
-      {/* Two-column on desktop, single column on mobile */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-        gap: 16,
-        alignItems: "start",
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, alignItems: "start" }}>
 
-        {/* LEFT — Booking Information + Admin Actions */}
+        {/* LEFT */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
             <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 4 }}>Booking Information</div>
@@ -90,39 +94,24 @@ function TransactionDetailPage({ txn, onBack, isMobile }) {
             <InfoRow label="Customer:"       value={txn.customer} />
             <InfoRow label="Partner:"        value={txn.partner} />
             <InfoRow label="Service:"        value={txn.service} />
-            {/* Custom status row */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0" }}>
               <span style={{ fontSize: 13, color: "#6b7280" }}>Status:</span>
               <StatusBadge status={txn.status} />
             </div>
           </div>
 
-          {/* Admin Actions */}
           <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
             <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 14 }}>Admin Actions</div>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <button
                 onClick={() => setMarkedPaid(true)}
-                style={{
-                  background: markedPaid ? "#22c55e" : "#111",
-                  color: "#fff", border: "none", borderRadius: 7,
-                  padding: "8px 18px", fontSize: 13, fontWeight: 600,
-                  cursor: "pointer", transition: "background 0.2s",
-                  flex: isMobile ? "1 1 auto" : "0 0 auto",
-                }}
+                style={{ background: markedPaid ? "#22c55e" : "#111", color: "#fff", border: "none", borderRadius: 7, padding: "8px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "background 0.2s", flex: isMobile ? "1 1 auto" : "0 0 auto" }}
               >
                 {markedPaid ? "Paid to Partner ✓" : "Mark as Paid to Partner"}
               </button>
               <button
                 onClick={() => setRefundIssued(true)}
-                style={{
-                  background: "none",
-                  color: refundIssued ? "#22c55e" : "#374151",
-                  border: `1px solid ${refundIssued ? "#22c55e" : "#e5e7eb"}`,
-                  borderRadius: 7, padding: "8px 18px", fontSize: 13,
-                  fontWeight: 500, cursor: "pointer", transition: "all 0.2s",
-                  flex: isMobile ? "1 1 auto" : "0 0 auto",
-                }}
+                style={{ background: "none", color: refundIssued ? "#22c55e" : "#374151", border: `1px solid ${refundIssued ? "#22c55e" : "#e5e7eb"}`, borderRadius: 7, padding: "8px 18px", fontSize: 13, fontWeight: 500, cursor: "pointer", transition: "all 0.2s", flex: isMobile ? "1 1 auto" : "0 0 auto" }}
               >
                 {refundIssued ? "Refund Issued ✓" : "Issue Refund"}
               </button>
@@ -130,38 +119,31 @@ function TransactionDetailPage({ txn, onBack, isMobile }) {
           </div>
         </div>
 
-        {/* RIGHT — Payment Details */}
+        {/* RIGHT */}
         <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "20px 22px" }}>
           <div style={{ fontWeight: 600, fontSize: 14, color: "#111", marginBottom: 4 }}>Payment Details</div>
           <div style={{ height: 1, background: "#f3f4f6", margin: "10px 0 4px" }} />
-
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Payment Method</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.method}</span>
           </div>
-
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Payment Reference</span>
             <span style={{ fontSize: 13, color: "#2563eb", fontWeight: 500 }}>{txn.paymentRef}</span>
           </div>
-
           <div style={{ height: 10 }} />
-
           <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Service Amount:</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.serviceAmount}</span>
           </div>
-
           <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Platform Commission (20%):</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.commission}</span>
           </div>
-
           <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #f3f4f6" }}>
             <span style={{ fontSize: 13, color: "#6b7280" }}>Taxes (GST 18%):</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 500 }}>{txn.taxes}</span>
           </div>
-
           <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0 4px" }}>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 700 }}>Partner Payout:</span>
             <span style={{ fontSize: 13, color: "#111", fontWeight: 700 }}>{txn.partnerPayout}</span>
@@ -175,20 +157,37 @@ function TransactionDetailPage({ txn, onBack, isMobile }) {
 // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export default function AllTransactions() {
   const isMobile = useIsMobile();
-  const [search, setSearch]           = useState("");
+  const [search, setSearch]             = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedTxn, setSelectedTxn]   = useState(null);
   const [rowsPerPage, setRowsPerPage]   = useState(10);
   const [page, setPage]                 = useState(1);
 
+  // ── DATE FILTER STATE ──────────────────────────────────────────────────────
+  const [pendingDate, setPendingDate] = useState("");
+  const [activeDate, setActiveDate]   = useState("");
+
   const handleView = (t) => setSelectedTxn(t);
   const handleBack = ()  => setSelectedTxn(null);
 
+  const handleFilter = () => {
+    setActiveDate(pendingDate);
+    setPage(1);
+  };
+
+  const handleClearDate = () => {
+    setPendingDate("");
+    setActiveDate("");
+    setPage(1);
+  };
+
+  // ── FILTER LOGIC — includes date ───────────────────────────────────────────
   const filtered = ALL_TRANSACTIONS_DATA.filter(t => {
     const q = search.toLowerCase();
     const matchSearch = !q || [t.id, t.customer, t.partner, t.service].some(v => v.toLowerCase().includes(q));
     const matchStatus = statusFilter === "All" || t.status === statusFilter;
-    return matchSearch && matchStatus;
+    const matchDate   = !activeDate || t.dateOnly === activeDate;
+    return matchSearch && matchStatus && matchDate;
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
@@ -197,6 +196,17 @@ export default function AllTransactions() {
   if (selectedTxn) {
     return <TransactionDetailPage txn={selectedTxn} onBack={handleBack} isMobile={isMobile} />;
   }
+
+  const controlBase = {
+    display: "flex",
+    alignItems: "center",
+    border: "1px solid #e5e7eb",
+    borderRadius: 7,
+    padding: "7px 12px",
+    background: "#fafafa",
+    fontSize: 13,
+    color: "#374151",
+  };
 
   return (
     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
@@ -217,12 +227,7 @@ export default function AllTransactions() {
       </div>
 
       {/* Stat cards */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr",
-        gap: isMobile ? 10 : 14,
-        marginBottom: 22,
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: isMobile ? 10 : 14, marginBottom: 22 }}>
         {[
           { label: "Total Revenue",     value: "₹1,33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 6 }}>↑37%</span> },
           { label: "Pending Payments",  value: "₹1,33,345", extra: null },
@@ -246,13 +251,8 @@ export default function AllTransactions() {
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>All Transactions</div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
 
-            {/* Search — full width on mobile */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
-              flex: isMobile ? "1 1 100%" : "0 0 auto",
-              minWidth: isMobile ? 0 : 200,
-            }}>
+            {/* Search */}
+            <div style={{ ...controlBase, gap: 8, flex: isMobile ? "1 1 100%" : "0 0 auto", minWidth: isMobile ? 0 : 200 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
@@ -282,26 +282,58 @@ export default function AllTransactions() {
               </svg>
             </div>
 
-            {/* Date picker — desktop only */}
+            {/* ── DATE PICKER — desktop only ── */}
             {!isMobile && (
-              <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer" }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-                MM/DD/YYYY
+              <div style={{
+                ...controlBase,
+                gap: 7,
+                cursor: "pointer",
+                borderColor: activeDate ? "#111" : "#e5e7eb",
+                background: activeDate ? "#f9fafb" : "#fafafa",
+              }}>
+                <CalendarIcon color={activeDate ? "#374151" : "#9ca3af"} />
+                <input
+                  type="date"
+                  value={pendingDate}
+                  onChange={e => setPendingDate(e.target.value)}
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    fontSize: 13,
+                    color: pendingDate ? "#374151" : "#9ca3af",
+                    background: "transparent",
+                    cursor: "pointer",
+                    width: 110,
+                    WebkitAppearance: "none",
+                  }}
+                />
+                {(pendingDate || activeDate) && (
+                  <button
+                    onClick={handleClearDate}
+                    title="Clear date filter"
+                    style={{ border: "none", background: "none", padding: "0 2px", cursor: "pointer", color: "#9ca3af", fontSize: 15, lineHeight: 1, display: "flex", alignItems: "center" }}
+                  >
+                    ×
+                  </button>
+                )}
               </div>
             )}
 
-            <button style={{
-              background: "#111", color: "#fff", border: "none", borderRadius: 7,
-              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-              flex: isMobile ? "1 1 auto" : "0 0 auto",
-            }}>
+            {/* Filter button */}
+            <button
+              onClick={handleFilter}
+              style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer", flex: isMobile ? "1 1 auto" : "0 0 auto" }}
+            >
               Filter
             </button>
+
+            {/* Active date badge */}
+            {activeDate && (
+              <span style={{ fontSize: 12, color: "#374151", background: "#f3f4f6", border: "1px solid #e5e7eb", borderRadius: 5, padding: "4px 10px", display: "flex", alignItems: "center", gap: 6 }}>
+                📅 {activeDate}
+                <button onClick={handleClearDate} style={{ border: "none", background: "none", cursor: "pointer", color: "#6b7280", fontSize: 13, lineHeight: 1, padding: 0 }}>×</button>
+              </span>
+            )}
           </div>
         </div>
 
@@ -311,11 +343,7 @@ export default function AllTransactions() {
             {paginated.length === 0 ? (
               <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No transactions found.</div>
             ) : paginated.map((t, i) => (
-              <div key={i} style={{
-                background: "#fafafa", border: "1px solid #f0f0f0",
-                borderRadius: 10, padding: 14, marginBottom: 12,
-              }}>
-                {/* Card header */}
+              <div key={i} style={{ background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 10, padding: 14, marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{t.id}</div>
@@ -323,8 +351,6 @@ export default function AllTransactions() {
                   </div>
                   <StatusBadge status={t.status} />
                 </div>
-
-                {/* Card body — 2-col grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
                   {[
                     { label: "Customer", value: t.customer },
@@ -338,8 +364,6 @@ export default function AllTransactions() {
                     </div>
                   ))}
                 </div>
-
-                {/* Card footer */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: "#111" }}>{t.amount}</span>
                   <button
@@ -393,7 +417,7 @@ export default function AllTransactions() {
           </table>
         )}
 
-        {/* Pagination — original, zero changes */}
+        {/* Pagination */}
         <div style={{ padding: "12px 20px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap" }}>
           <span>Rows per page:</span>
           <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 24px 3px 8px" }}>

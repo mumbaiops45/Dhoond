@@ -13,16 +13,16 @@ function useIsMobile() {
   return isMobile;
 }
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// ── DATA — dates normalized to YYYY-MM-DD ─────────────────────────────────────
 const CANCELLED_BOOKINGS_DATA = [
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Don't need the service anymore",  customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Not available at this time",        customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:45 AM - Cancelled by Partner"], cancelledBy: "Partner",   refundStatus: "Processed", amount: "₹1200" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Don't need the service anymore",  customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Not available at this time",        customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:45 AM - Cancelled by Partner"], cancelledBy: "Partner",   refundStatus: "Processed", amount: "₹1200" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Don't need the service anymore",  customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Don't need the service anymore",  customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Don't need the service anymore",  customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", reason: "Don't need the service anymore",  customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
+  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-22", reason: "Don't need the service anymore", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
+  { id: "#B002", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-22", reason: "Not available at this time",       customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 09:45 AM - Cancelled by Partner"],  cancelledBy: "Partner",   refundStatus: "Processed", amount: "₹1200" },
+  { id: "#B003", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-23", reason: "Don't need the service anymore", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-23 09:00 AM - Booking Created", "2025-03-23 09:10 AM - Assigned to Partner", "2025-03-23 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
+  { id: "#B004", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-23", reason: "Not available at this time",       customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-23 09:00 AM - Booking Created", "2025-03-23 09:10 AM - Assigned to Partner", "2025-03-23 09:45 AM - Cancelled by Partner"],  cancelledBy: "Partner",   refundStatus: "Processed", amount: "₹1200" },
+  { id: "#B005", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-24", reason: "Don't need the service anymore", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-24 09:00 AM - Booking Created", "2025-03-24 09:10 AM - Assigned to Partner", "2025-03-24 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
+  { id: "#B006", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-24", reason: "Don't need the service anymore", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-24 09:00 AM - Booking Created", "2025-03-24 09:10 AM - Assigned to Partner", "2025-03-24 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
+  { id: "#B007", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-25", reason: "Don't need the service anymore", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-25 09:00 AM - Booking Created", "2025-03-25 09:10 AM - Assigned to Partner", "2025-03-25 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
+  { id: "#B008", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-25", reason: "Don't need the service anymore", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter", partnerExperience: "5 Years", serviceCategory: "Carpentry", serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-25 09:00 AM - Booking Created", "2025-03-25 09:10 AM - Assigned to Partner", "2025-03-25 09:30 AM - Cancelled by Customer"], cancelledBy: "Customer", refundStatus: "Pending",   amount: "₹1200" },
 ];
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -56,6 +56,18 @@ function RefundBadge({ status }) {
   );
 }
 
+// ── CALENDAR ICON ─────────────────────────────────────────────────────────────
+function CalendarIcon({ color = "#9ca3af" }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
 // ── DETAIL PAGE ───────────────────────────────────────────────────────────────
 function BookingDetailPage({ booking, onBack, isMobile }) {
   return (
@@ -70,15 +82,7 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
         {" / "}
         <span style={{ color: "#2563eb" }}>{booking.id}</span>
       </div>
-
-      {/* Two-column on desktop, single column on mobile */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-        gap: 16,
-        alignItems: "start",
-      }}>
-
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, alignItems: "start" }}>
         {/* LEFT */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <Card title="Booking Summary">
@@ -89,29 +93,23 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
             <Row label="Reason"        value={booking.reason} />
             <Row label="Refund Status" valueEl={<RefundBadge status={booking.refundStatus} />} />
           </Card>
-
           <Card title="Service Details">
             <Row label="Category"    value={booking.serviceCategory} />
             <Row label="Service"     value={booking.serviceName} />
             <Row label="Description" value={booking.serviceDescription} />
             <Row label="Duration"    value={booking.serviceDuration} />
           </Card>
-
           <Card title="Cancellation Timeline">
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {booking.timeline.map((t, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <div style={{
-                    width: 7, height: 7, borderRadius: "50%", marginTop: 5, flexShrink: 0,
-                    background: i === booking.timeline.length - 1 ? "#ef4444" : "#22c55e"
-                  }} />
+                  <div style={{ width: 7, height: 7, borderRadius: "50%", marginTop: 5, flexShrink: 0, background: i === booking.timeline.length - 1 ? "#ef4444" : "#22c55e" }} />
                   <span style={{ fontSize: 12, color: "#6b7280" }}>{t}</span>
                 </div>
               ))}
             </div>
           </Card>
         </div>
-
         {/* RIGHT */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <Card title="Customer Details">
@@ -119,14 +117,12 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
             <Row label="Phone"   value={booking.customerPhone} />
             <Row label="Address" value={booking.customerAddress} />
           </Card>
-
           <Card title="Partner Details">
             <Row label="Name"       value={booking.partner} />
             <Row label="Phone"      value={booking.partnerPhone} />
             <Row label="Profession" value={booking.partnerProfession} />
             <Row label="Experience" value={booking.partnerExperience} />
           </Card>
-
           <Card title="Payment Breakdown">
             <Row label="Booking Amount" value={booking.amount} />
             <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
@@ -147,12 +143,30 @@ export default function CancelledBookings() {
   const [rowsPerPage, setRowsPerPage]         = useState(10);
   const [page, setPage]                       = useState(1);
 
+  // ── DATE FILTER STATE ──────────────────────────────────────────────────────
+  const [pendingDate, setPendingDate] = useState("");
+  const [activeDate, setActiveDate]   = useState("");
+
   const handleView = (b) => setSelectedBooking(b);
   const handleBack = ()  => setSelectedBooking(null);
 
+  const handleFilter = () => {
+    setActiveDate(pendingDate);
+    setPage(1);
+  };
+
+  const handleClearDate = () => {
+    setPendingDate("");
+    setActiveDate("");
+    setPage(1);
+  };
+
+  // ── FILTER LOGIC — includes date ───────────────────────────────────────────
   const filtered = CANCELLED_BOOKINGS_DATA.filter(b => {
     const q = search.toLowerCase();
-    return !q || [b.id, b.customer, b.partner, b.service, b.reason].some(v => v.toLowerCase().includes(q));
+    const matchSearch = !q || [b.id, b.customer, b.partner, b.service, b.reason].some(v => v.toLowerCase().includes(q));
+    const matchDate   = !activeDate || b.date === activeDate;
+    return matchSearch && matchDate;
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
@@ -162,17 +176,24 @@ export default function CancelledBookings() {
     return <BookingDetailPage booking={selectedBooking} onBack={handleBack} isMobile={isMobile} />;
   }
 
+  const controlBase = {
+    display: "flex",
+    alignItems: "center",
+    border: "1px solid #e5e7eb",
+    borderRadius: 7,
+    padding: "7px 12px",
+    background: "#fafafa",
+    fontSize: 13,
+    color: "#374151",
+  };
+
   return (
     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
 
       {/* Title */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
         <h1 style={{ margin: 0, color: "#111", fontSize: isMobile ? 18 : 24 }}>Cancelled Bookings</h1>
-        <div style={{
-          display: "flex", alignItems: "center", gap: 5, background: "#fff",
-          border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px",
-          fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500,
-        }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 7, padding: "6px 14px", fontSize: 13, color: "#374151", cursor: "pointer", fontWeight: 500 }}>
           All
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round">
             <polyline points="6 9 12 15 18 9" />
@@ -181,12 +202,7 @@ export default function CancelledBookings() {
       </div>
 
       {/* Stat cards */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr",
-        gap: isMobile ? 10 : 14,
-        marginBottom: 22,
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: isMobile ? 10 : 14, marginBottom: 22 }}>
         {[
           { label: "Total Bookings",     value: "33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 4 }}>↑37%</span> },
           { label: "Completed Bookings", value: "33,253", extra: null },
@@ -210,13 +226,8 @@ export default function CancelledBookings() {
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>Cancelled Bookings List</div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
 
-            {/* Search — full width on mobile */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
-              flex: isMobile ? "1 1 100%" : "0 0 auto",
-              minWidth: isMobile ? 0 : 200,
-            }}>
+            {/* Search */}
+            <div style={{ ...controlBase, gap: 8, flex: isMobile ? "1 1 100%" : "0 0 auto", minWidth: isMobile ? 0 : 200 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
@@ -228,30 +239,58 @@ export default function CancelledBookings() {
               />
             </div>
 
-            {/* Date — desktop only */}
+            {/* ── DATE PICKER — desktop only ── */}
             {!isMobile && (
               <div style={{
-                display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb",
-                borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb",
-                background: "#fafafa", cursor: "pointer",
+                ...controlBase,
+                gap: 7,
+                cursor: "pointer",
+                borderColor: activeDate ? "#111" : "#e5e7eb",
+                background: activeDate ? "#f9fafb" : "#fafafa",
               }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-                MM/DD/YYYY
+                <CalendarIcon color={activeDate ? "#374151" : "#9ca3af"} />
+                <input
+                  type="date"
+                  value={pendingDate}
+                  onChange={e => setPendingDate(e.target.value)}
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    fontSize: 13,
+                    color: pendingDate ? "#374151" : "#9ca3af",
+                    background: "transparent",
+                    cursor: "pointer",
+                    width: 110,
+                    WebkitAppearance: "none",
+                  }}
+                />
+                {(pendingDate || activeDate) && (
+                  <button
+                    onClick={handleClearDate}
+                    title="Clear date filter"
+                    style={{ border: "none", background: "none", padding: "0 2px", cursor: "pointer", color: "#9ca3af", fontSize: 15, lineHeight: 1, display: "flex", alignItems: "center" }}
+                  >
+                    ×
+                  </button>
+                )}
               </div>
             )}
 
-            <button style={{
-              background: "#111", color: "#fff", border: "none", borderRadius: 7,
-              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-              flex: isMobile ? "1 1 auto" : "0 0 auto",
-            }}>
+            {/* Filter button */}
+            <button
+              onClick={handleFilter}
+              style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer", flex: isMobile ? "1 1 auto" : "0 0 auto" }}
+            >
               Filter
             </button>
+
+            {/* Active date badge */}
+            {activeDate && (
+              <span style={{ fontSize: 12, color: "#374151", background: "#f3f4f6", border: "1px solid #e5e7eb", borderRadius: 5, padding: "4px 10px", display: "flex", alignItems: "center", gap: 6 }}>
+                📅 {activeDate}
+                <button onClick={handleClearDate} style={{ border: "none", background: "none", cursor: "pointer", color: "#6b7280", fontSize: 13, lineHeight: 1, padding: 0 }}>×</button>
+              </span>
+            )}
           </div>
         </div>
 
@@ -261,11 +300,7 @@ export default function CancelledBookings() {
             {paginated.length === 0 ? (
               <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No cancelled bookings found.</div>
             ) : paginated.map((b, i) => (
-              <div key={i} style={{
-                background: "#fafafa", border: "1px solid #f0f0f0",
-                borderRadius: 10, padding: 14, marginBottom: 12,
-              }}>
-                {/* Card header */}
+              <div key={i} style={{ background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 10, padding: 14, marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{b.id}</div>
@@ -273,8 +308,6 @@ export default function CancelledBookings() {
                   </div>
                   <RefundBadge status={b.refundStatus} />
                 </div>
-
-                {/* Card body — 2-col grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
                   {[
                     { label: "Customer", value: b.customer },
@@ -288,13 +321,9 @@ export default function CancelledBookings() {
                     </div>
                   ))}
                 </div>
-
-                {/* Reason */}
                 <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 10, padding: "6px 8px", background: "#fff", borderRadius: 6, border: "1px solid #f0f0f0" }}>
                   <span style={{ color: "#9ca3af", fontSize: 10 }}>Reason: </span>{b.reason}
                 </div>
-
-                {/* Card footer */}
                 <div style={{ display: "flex", justifyContent: "flex-end", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
                   <button
                     // onClick={() => handleView(b)}
@@ -307,7 +336,7 @@ export default function CancelledBookings() {
             ))}
           </div>
         ) : (
-          /* ── DESKTOP: original table, zero changes ── */
+          /* ── DESKTOP: table ── */
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
@@ -347,12 +376,8 @@ export default function CancelledBookings() {
           </table>
         )}
 
-        {/* Pagination — original, zero changes */}
-        <div style={{
-          padding: "12px 20px", borderTop: "1px solid #f3f4f6",
-          display: "flex", justifyContent: "flex-end", alignItems: "center",
-          gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap",
-        }}>
+        {/* Pagination */}
+        <div style={{ padding: "12px 20px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap" }}>
           <span>Rows per page:</span>
           <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 24px 3px 8px" }}>
             <select
@@ -362,8 +387,7 @@ export default function CancelledBookings() {
             >
               {[5, 10, 20].map(n => <option key={n} value={n}>{n}</option>)}
             </select>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round"
-              style={{ position: "absolute", right: 5, pointerEvents: "none" }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2.5" strokeLinecap="round" style={{ position: "absolute", right: 5, pointerEvents: "none" }}>
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </div>

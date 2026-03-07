@@ -13,16 +13,16 @@ function useIsMobile() {
   return isMobile;
 }
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// ── DATA — dates normalized to YYYY-MM-DD ─────────────────────────────────────
 const COMPLETED_BOOKINGS_DATA = [
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "22/03/2025", payment: "Pending", amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter",   partnerExperience: "5 Years", serviceCategory: "Carpentry",   serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 11:00 AM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
-  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "22/03/2025", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B001", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Carpenter - Furniture Repair", date: "2025-03-22", payment: "Pending", amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Carpenter",   partnerExperience: "5 Years", serviceCategory: "Carpentry",   serviceName: "Furniture Repair", serviceDescription: "Fix and polish wooden furniture", serviceDuration: "2 Hours", timeline: ["2025-03-22 09:00 AM - Booking Created", "2025-03-22 09:10 AM - Assigned to Partner", "2025-03-22 11:00 AM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B002", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-22", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-22 10:00 AM - Booking Created", "2025-03-22 10:15 AM - Assigned to Partner", "2025-03-22 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B003", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-23", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-23 10:00 AM - Booking Created", "2025-03-23 10:15 AM - Assigned to Partner", "2025-03-23 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B004", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-23", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-23 10:00 AM - Booking Created", "2025-03-23 10:15 AM - Assigned to Partner", "2025-03-23 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B005", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-24", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-24 10:00 AM - Booking Created", "2025-03-24 10:15 AM - Assigned to Partner", "2025-03-24 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B006", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-24", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-24 10:00 AM - Booking Created", "2025-03-24 10:15 AM - Assigned to Partner", "2025-03-24 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B007", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-25", payment: "Refunded",amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-25 10:00 AM - Booking Created", "2025-03-25 10:15 AM - Assigned to Partner", "2025-03-25 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
+  { id: "#B008", customer: "Rahul Kumar", partner: "Vikas Sharma", service: "Electrician - Wiring",         date: "2025-03-25", payment: "Paid",    amount: "₹1200", customerPhone: "+91 9876543210", customerAddress: "123, MG Road, Bangalore", partnerPhone: "+91 9876543210", partnerProfession: "Electrician", partnerExperience: "8 Years", serviceCategory: "Electrician", serviceName: "House Wiring",     serviceDescription: "Full wiring for 2BHK",              serviceDuration: "4 Hours", timeline: ["2025-03-25 10:00 AM - Booking Created", "2025-03-25 10:15 AM - Assigned to Partner", "2025-03-25 02:00 PM - Job Completed"], basePrice: "₹1000", extraCharges: "₹100", taxes: "₹100", totalAmount: "₹1200", partnerEarnings: "₹960", commission: "₹240" },
 ];
 
 // ── BADGE ─────────────────────────────────────────────────────────────────────
@@ -58,6 +58,18 @@ function Row({ label, value, valueEl }) {
   );
 }
 
+// ── CALENDAR ICON ─────────────────────────────────────────────────────────────
+function CalendarIcon({ color = "#9ca3af" }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
 // ── DETAIL PAGE ───────────────────────────────────────────────────────────────
 function BookingDetailPage({ booking, onBack, isMobile }) {
   return (
@@ -72,10 +84,7 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
         {" / "}
         <span style={{ color: "#2563eb" }}>{booking.id}</span>
       </div>
-
-      {/* Two-column on desktop, single column on mobile */}
       <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, alignItems: "start" }}>
-
         {/* LEFT */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <Card title="Booking Summary">
@@ -84,14 +93,12 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
             <Row label="Status"         valueEl={<span style={{ fontSize: 13, color: "#22c55e", fontWeight: 500 }}>Completed</span>} />
             <Row label="Payment Status" valueEl={<PaymentBadge status={booking.payment} />} />
           </Card>
-
           <Card title="Service Details">
             <Row label="Category"    value={booking.serviceCategory} />
             <Row label="Service"     value={booking.serviceName} />
             <Row label="Description" value={booking.serviceDescription} />
             <Row label="Duration"    value={booking.serviceDuration} />
           </Card>
-
           <Card title="Booking Timeline">
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {booking.timeline.map((t, i) => (
@@ -103,7 +110,6 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
             </div>
           </Card>
         </div>
-
         {/* RIGHT */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <Card title="Customer Details">
@@ -111,15 +117,12 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
             <Row label="Phone"   value={booking.customerPhone} />
             <Row label="Address" value={booking.customerAddress} />
           </Card>
-
           <Card title="Partner Details">
             <Row label="Name"       value={booking.partner} />
             <Row label="Phone"      value={booking.partnerPhone} />
             <Row label="Profession" value={booking.partnerProfession} />
             <Row label="Experience" value={booking.partnerExperience} />
           </Card>
-
-          {/* Payment Breakdown — space-between (alignLeft false), unchanged from original */}
           <Card title="Payment Breakdown">
             <Row label="Base Price"    value={booking.basePrice} />
             <Row label="Extra Charges" value={booking.extraCharges} />
@@ -148,14 +151,31 @@ export default function CompletedBookings() {
   const [rowsPerPage, setRowsPerPage]         = useState(10);
   const [page, setPage]                       = useState(1);
 
+  // ── DATE FILTER STATE ──────────────────────────────────────────────────────
+  const [pendingDate, setPendingDate] = useState("");
+  const [activeDate, setActiveDate]   = useState("");
+
   const handleView = (b) => setSelectedBooking(b);
   const handleBack = ()  => setSelectedBooking(null);
 
+  const handleFilter = () => {
+    setActiveDate(pendingDate);
+    setPage(1);
+  };
+
+  const handleClearDate = () => {
+    setPendingDate("");
+    setActiveDate("");
+    setPage(1);
+  };
+
+  // ── FILTER LOGIC — includes date ───────────────────────────────────────────
   const filtered = COMPLETED_BOOKINGS_DATA.filter(b => {
     const q = search.toLowerCase();
     const matchSearch  = !q || [b.id, b.customer, b.partner, b.service].some(v => v.toLowerCase().includes(q));
     const matchPayment = paymentFilter === "All" || b.payment === paymentFilter;
-    return matchSearch && matchPayment;
+    const matchDate    = !activeDate || b.date === activeDate;
+    return matchSearch && matchPayment && matchDate;
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
@@ -164,6 +184,17 @@ export default function CompletedBookings() {
   if (selectedBooking) {
     return <BookingDetailPage booking={selectedBooking} onBack={handleBack} isMobile={isMobile} />;
   }
+
+  const controlBase = {
+    display: "flex",
+    alignItems: "center",
+    border: "1px solid #e5e7eb",
+    borderRadius: 7,
+    padding: "7px 12px",
+    background: "#fafafa",
+    fontSize: 13,
+    color: "#374151",
+  };
 
   return (
     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
@@ -204,12 +235,8 @@ export default function CompletedBookings() {
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>Completed Bookings List</div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
 
-            {/* Search — full width on mobile */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
-              flex: isMobile ? "1 1 100%" : "0 0 auto", minWidth: isMobile ? 0 : 180,
-            }}>
+            {/* Search */}
+            <div style={{ ...controlBase, gap: 8, flex: isMobile ? "1 1 100%" : "0 0 auto", minWidth: isMobile ? 0 : 180 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
@@ -221,8 +248,10 @@ export default function CompletedBookings() {
               />
             </div>
 
-            {/* Payment filter + date + Filter button — grouped, never stretch */}
-            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            {/* Payment filter + date + Filter — grouped */}
+            <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+
+              {/* Payment filter */}
               <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 32px 7px 12px", background: "#fff" }}>
                 <select
                   value={paymentFilter}
@@ -239,22 +268,58 @@ export default function CompletedBookings() {
                 </svg>
               </div>
 
-              {/* Date picker — desktop only */}
+              {/* ── DATE PICKER — desktop only ── */}
               {!isMobile && (
-                <div style={{ display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb", borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer" }}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                  MM/DD/YYYY
+                <div style={{
+                  ...controlBase,
+                  gap: 7,
+                  cursor: "pointer",
+                  borderColor: activeDate ? "#111" : "#e5e7eb",
+                  background: activeDate ? "#f9fafb" : "#fafafa",
+                }}>
+                  <CalendarIcon color={activeDate ? "#374151" : "#9ca3af"} />
+                  <input
+                    type="date"
+                    value={pendingDate}
+                    onChange={e => setPendingDate(e.target.value)}
+                    style={{
+                      border: "none",
+                      outline: "none",
+                      fontSize: 13,
+                      color: pendingDate ? "#374151" : "#9ca3af",
+                      background: "transparent",
+                      cursor: "pointer",
+                      width: 110,
+                      WebkitAppearance: "none",
+                    }}
+                  />
+                  {(pendingDate || activeDate) && (
+                    <button
+                      onClick={handleClearDate}
+                      title="Clear date filter"
+                      style={{ border: "none", background: "none", padding: "0 2px", cursor: "pointer", color: "#9ca3af", fontSize: 15, lineHeight: 1, display: "flex", alignItems: "center" }}
+                    >
+                      ×
+                    </button>
+                  )}
                 </div>
               )}
 
-              <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
+              {/* Filter button */}
+              <button
+                onClick={handleFilter}
+                style={{ background: "#111", color: "#fff", border: "none", borderRadius: 7, padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}
+              >
                 Filter
               </button>
+
+              {/* Active date badge */}
+              {activeDate && (
+                <span style={{ fontSize: 12, color: "#374151", background: "#f3f4f6", border: "1px solid #e5e7eb", borderRadius: 5, padding: "4px 10px", display: "flex", alignItems: "center", gap: 6 }}>
+                  📅 {activeDate}
+                  <button onClick={handleClearDate} style={{ border: "none", background: "none", cursor: "pointer", color: "#6b7280", fontSize: 13, lineHeight: 1, padding: 0 }}>×</button>
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -266,7 +331,6 @@ export default function CompletedBookings() {
               <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No completed bookings found.</div>
             ) : paginated.map((b, i) => (
               <div key={i} style={{ background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 10, padding: 14, marginBottom: 12 }}>
-                {/* Card header */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{b.id}</div>
@@ -274,8 +338,6 @@ export default function CompletedBookings() {
                   </div>
                   <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600 }}>Completed</span>
                 </div>
-
-                {/* Card body */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
                   {[
                     { label: "Customer", value: b.customer },
@@ -289,8 +351,6 @@ export default function CompletedBookings() {
                     </div>
                   ))}
                 </div>
-
-                {/* Card footer */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
                   <PaymentBadge status={b.payment} />
                   <button
@@ -304,7 +364,7 @@ export default function CompletedBookings() {
             ))}
           </div>
         ) : (
-          /* ── DESKTOP: original table, zero changes ── */
+          /* ── DESKTOP: table ── */
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
@@ -345,7 +405,7 @@ export default function CompletedBookings() {
           </table>
         )}
 
-        {/* Pagination — original, zero changes */}
+        {/* Pagination */}
         <div style={{ padding: "12px 20px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 14, fontSize: 12, color: "#6b7280", flexWrap: "wrap" }}>
           <span>Rows per page:</span>
           <div style={{ position: "relative", display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: 5, padding: "3px 24px 3px 8px" }}>

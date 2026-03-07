@@ -156,55 +156,36 @@ function PaymentBadge({ status }) {
   };
   const s = styles[status] || styles["Pending"];
   return (
-    <span
-  style={{
-    display: "inline-block",
-    width: 70,              // same width for all badges
-    textAlign: "center",
-    fontSize: 12,
-    color: s.color,
-    background: s.bg,
-    padding: s.padding,
-    borderRadius: s.borderRadius
-  }}
->
-  {status}
-</span>
+    <span style={{
+      display: "inline-block",
+      width: 70,
+      textAlign: "center",
+      fontSize: 12,
+      color: s.color,
+      background: s.bg,
+      padding: s.padding,
+      borderRadius: s.borderRadius
+    }}>
+      {status}
+    </span>
   );
 }
 
-// ── LABEL / VALUE ROW — exact original, untouched ─────────────────────────────
 function Row({ label, value, valueEl, alignLeft = false }) {
   const containerStyle = {
     display: "flex",
     alignItems: "center",
     marginBottom: 10,
-    ...(alignLeft ? {
-      justifyContent: "flex-start",
-    } : {
-      justifyContent: "space-between",
-    }),
+    ...(alignLeft ? { justifyContent: "flex-start" } : { justifyContent: "space-between" }),
   };
-
-  const valueWrapperStyle = {
-    fontSize: 13,
-    fontWeight: 500,
-    color: "#111",
-  };
-
   return (
     <div style={containerStyle}>
-      <div style={{ color: "#6b7280", fontSize: 13, width: "30%" }}>
-        {label}:
-      </div>
-      <div style={valueWrapperStyle}>
-        {valueEl ? valueEl : value}
-      </div>
+      <div style={{ color: "#6b7280", fontSize: 13, width: "30%" }}>{label}:</div>
+      <div style={{ fontSize: 13, fontWeight: 500, color: "#111" }}>{valueEl ? valueEl : value}</div>
     </div>
   );
 }
 
-// ── CARD ──────────────────────────────────────────────────────────────────────
 function Card({ title, children, style }) {
   return (
     <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10, padding: "18px 20px", ...style }}>
@@ -218,8 +199,6 @@ function Card({ title, children, style }) {
 function BookingDetailPage({ booking, onBack, isMobile }) {
   return (
     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "26px 30px" }}>
-
-      {/* Header */}
       <h1 style={{ margin: "0 0 4px", fontSize: isMobile ? 17 : 20, fontWeight: 700, color: "#111" }}>
         Booking Details - {booking.id}
       </h1>
@@ -230,91 +209,71 @@ function BookingDetailPage({ booking, onBack, isMobile }) {
         {" / "}
         <span style={{ color: "#2563eb" }}>{booking.id}</span>
       </div>
-
-      {/* Two-column on desktop, single column on mobile */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-        gap: 16,
-        alignItems: "start",
-      }}>
-
-        {/* ── LEFT COLUMN ── */}
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-          {/* Booking Summary */}
-          <Card title="Booking Summary ">
-            <Row alignLeft={true} label="Booking ID"     value={booking.id} />
-            <Row alignLeft={true} label="Date"           value={booking.date} />
-            <Row alignLeft={true} label="Status"         valueEl={<OrderBadge status={booking.orderStatus} />} />
-            <Row alignLeft={true} label="Payment Status" valueEl={<PaymentBadge status={booking.payment} />} />
+          <Card title="Booking Summary">
+            <Row alignLeft label="Booking ID"     value={booking.id} />
+            <Row alignLeft label="Date"           value={booking.date} />
+            <Row alignLeft label="Status"         valueEl={<OrderBadge status={booking.orderStatus} />} />
+            <Row alignLeft label="Payment Status" valueEl={<PaymentBadge status={booking.payment} />} />
           </Card>
-
-          {/* Service Details */}
           <Card title="Service Details">
-            <Row alignLeft={true} label="Category"    value={booking.serviceCategory} />
-            <Row alignLeft={true} label="Service"     value={booking.serviceName} />
-            <Row alignLeft={true} label="Description" value={booking.serviceDescription} />
-            <Row alignLeft={true} label="Duration"    value={booking.serviceDuration} />
+            <Row alignLeft label="Category"    value={booking.serviceCategory} />
+            <Row alignLeft label="Service"     value={booking.serviceName} />
+            <Row alignLeft label="Description" value={booking.serviceDescription} />
+            <Row alignLeft label="Duration"    value={booking.serviceDuration} />
           </Card>
-
-          {/* Booking Timeline */}
           <Card title="Booking Timeline">
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {booking.timeline.map((t, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <div style={{
-                    width: 7, height: 7, borderRadius: "50%", marginTop: 5, flexShrink: 0,
-                    background: i === booking.timeline.length - 1 ? "#f59e0b" : "#22c55e"
-                  }} />
+                  <div style={{ width: 7, height: 7, borderRadius: "50%", marginTop: 5, flexShrink: 0, background: i === booking.timeline.length - 1 ? "#f59e0b" : "#22c55e" }} />
                   <span style={{ fontSize: 12, color: "#6b7280" }}>{t}</span>
                 </div>
               ))}
             </div>
           </Card>
         </div>
-
-        {/* ── RIGHT COLUMN ── */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-          {/* Customer Details */}
           <Card title="Customer Details">
-            <Row alignLeft={true} label="Name"    value={booking.customer} />
-            <Row alignLeft={true} label="Phone"   value={booking.customerPhone} />
-            <Row alignLeft={true} label="Address" value={booking.customerAddress} />
+            <Row alignLeft label="Name"    value={booking.customer} />
+            <Row alignLeft label="Phone"   value={booking.customerPhone} />
+            <Row alignLeft label="Address" value={booking.customerAddress} />
           </Card>
-
-          {/* Partner Details */}
           <Card title="Partner Details">
-            <Row alignLeft={true} label="Name"       value={booking.partner} />
-            <Row alignLeft={true} label="Phone"      value={booking.partnerPhone} />
-            <Row alignLeft={true} label="Profession" value={booking.partnerProfession} />
-            <Row alignLeft={true} label="Experience" value={booking.partnerExperience} />
+            <Row alignLeft label="Name"       value={booking.partner} />
+            <Row alignLeft label="Phone"      value={booking.partnerPhone} />
+            <Row alignLeft label="Profession" value={booking.partnerProfession} />
+            <Row alignLeft label="Experience" value={booking.partnerExperience} />
           </Card>
-
-          {/* Payment Breakdown — alignLeft is FALSE (original): space-between layout preserved */}
           <Card title="Payment Breakdown">
             <Row label="Base Price"    value={booking.basePrice} />
             <Row label="Extra Charges" value={booking.extraCharges} />
             <Row label="Taxes"         value={booking.taxes} />
-
-            {/* Divider */}
             <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
-
-            {/* Total - bold */}
             <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
               <span style={{ fontSize: 13, color: "#111", fontWeight: 700 }}>Total Amount:</span>
               <span style={{ fontSize: 13, color: "#111", fontWeight: 700 }}>{booking.totalAmount}</span>
             </div>
-
             <div style={{ borderTop: "1px solid #f3f4f6", margin: "8px 0" }} />
-
             <Row label="Partner Earnings" value={booking.partnerEarnings} />
             <Row label="Commission"       value={booking.commission} />
           </Card>
         </div>
       </div>
     </div>
+  );
+}
+
+// ── CALENDAR ICON ─────────────────────────────────────────────────────────────
+function CalendarIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
   );
 }
 
@@ -327,22 +286,56 @@ export default function AllBookings() {
   const [rowsPerPage, setRowsPerPage]         = useState(10);
   const [page, setPage]                       = useState(1);
 
+  // ── DATE FILTER STATE ──────────────────────────────────────────────────────
+  // pendingDate: what's typed in the picker (not applied yet)
+  // activeDate:  what's actually filtering the table (applied on Filter click)
+  const [pendingDate, setPendingDate] = useState("");
+  const [activeDate, setActiveDate]   = useState("");
+
   const handleView = (b) => setSelectedBooking(b);
   const handleBack = ()  => setSelectedBooking(null);
 
+  // ── FILTER LOGIC — now includes date ──────────────────────────────────────
   const filtered = ALL_BOOKINGS_DATA.filter(b => {
     const q = search.toLowerCase();
     const matchSearch  = !q || [b.id, b.customer, b.partner, b.service].some(v => v.toLowerCase().includes(q));
     const matchPayment = paymentFilter === "All" || b.payment === paymentFilter;
-    return matchSearch && matchPayment;
+    // Compare booking date (YYYY-MM-DD string) with selected date
+    const matchDate    = !activeDate || b.date === activeDate;
+    return matchSearch && matchPayment && matchDate;
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
   const paginated  = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+  // ── APPLY FILTER HANDLER ───────────────────────────────────────────────────
+  const handleFilter = () => {
+    setActiveDate(pendingDate);
+    setPage(1);
+  };
+
+  // ── CLEAR DATE ─────────────────────────────────────────────────────────────
+  const handleClearDate = () => {
+    setPendingDate("");
+    setActiveDate("");
+    setPage(1);
+  };
+
   if (selectedBooking) {
     return <BookingDetailPage booking={selectedBooking} onBack={handleBack} isMobile={isMobile} />;
   }
+
+  // Shared control styles — define once, reuse
+  const controlBase = {
+    display: "flex",
+    alignItems: "center",
+    border: "1px solid #e5e7eb",
+    borderRadius: 7,
+    padding: "7px 12px",
+    background: "#fafafa",
+    fontSize: 13,
+    color: "#374151",
+  };
 
   return (
     <div style={{ flex: 1, overflowY: "auto", background: "#f7f8fa", padding: isMobile ? "16px 14px" : "28px 32px" }}>
@@ -363,12 +356,7 @@ export default function AllBookings() {
       </div>
 
       {/* Stat cards */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
-        gap: isMobile ? 10 : 14,
-        marginBottom: 22,
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: isMobile ? 10 : 14, marginBottom: 22 }}>
         {[
           { label: "Total Bookings",     value: "33,345", extra: <span style={{ fontSize: 12, color: "#22c55e", fontWeight: 600, marginLeft: 4 }}>↑37%</span> },
           { label: "Completed Bookings", value: "33,253", extra: null },
@@ -392,13 +380,8 @@ export default function AllBookings() {
           <div style={{ fontWeight: 600, fontSize: 15, color: "#111", marginBottom: 14 }}>All Bookings</div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
 
-            {/* Search — full width on mobile */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8, border: "1px solid #e5e7eb",
-              borderRadius: 7, padding: "7px 12px", background: "#fafafa",
-              flex: isMobile ? "1 1 100%" : "0 0 auto",
-              minWidth: isMobile ? 0 : 180,
-            }}>
+            {/* Search */}
+            <div style={{ ...controlBase, gap: 8, flex: isMobile ? "1 1 100%" : "0 0 auto", minWidth: isMobile ? 0 : 180 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
@@ -428,29 +411,91 @@ export default function AllBookings() {
               </svg>
             </div>
 
-            {/* Date picker — desktop only */}
+            {/* ── DATE PICKER — desktop only, styled to match layout ── */}
             {!isMobile && (
               <div style={{
-                display: "flex", alignItems: "center", gap: 7, border: "1px solid #e5e7eb",
-                borderRadius: 7, padding: "7px 12px", fontSize: 13, color: "#bbb", background: "#fafafa", cursor: "pointer",
+                ...controlBase,
+                gap: 7,
+                cursor: "pointer",
+                position: "relative",
+                // Highlight the wrapper when a date is actively filtering
+                borderColor: activeDate ? "#111" : "#e5e7eb",
+                background: activeDate ? "#f9fafb" : "#fafafa",
               }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-                MM/DD/YYYY
+                <CalendarIcon />
+                <input
+                  type="date"
+                  value={pendingDate}
+                  onChange={e => setPendingDate(e.target.value)}
+                  // Hide the native placeholder text; show our own label when empty
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    fontSize: 13,
+                    color: pendingDate ? "#374151" : "#9ca3af",
+                    background: "transparent",
+                    cursor: "pointer",
+                    // Keep consistent width whether date is set or not
+                    width: 110,
+                    // Remove the native calendar icon on webkit
+                    WebkitAppearance: "none",
+                  }}
+                />
+                {/* Clear button — only when a date is selected in pending or active */}
+                {(pendingDate || activeDate) && (
+                  <button
+                    onClick={handleClearDate}
+                    title="Clear date filter"
+                    style={{
+                      border: "none",
+                      background: "none",
+                      padding: "0 2px",
+                      cursor: "pointer",
+                      color: "#9ca3af",
+                      fontSize: 14,
+                      lineHeight: 1,
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    ×
+                  </button>
+                )}
               </div>
             )}
 
-            <button style={{
-              background: "#111", color: "#fff", border: "none", borderRadius: 7,
-              padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-              flex: isMobile ? "1 1 auto" : "0 0 auto",
-            }}>
+            {/* Filter button — now actually applies date filter */}
+            <button
+              onClick={handleFilter}
+              style={{
+                background: "#111", color: "#fff", border: "none", borderRadius: 7,
+                padding: "7px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer",
+                flex: isMobile ? "1 1 auto" : "0 0 auto",
+              }}
+            >
               Filter
             </button>
+
+            {/* Active date indicator badge */}
+            {activeDate && (
+              <span style={{
+                fontSize: 12,
+                color: "#374151",
+                background: "#f3f4f6",
+                border: "1px solid #e5e7eb",
+                borderRadius: 5,
+                padding: "4px 10px",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+              }}>
+                📅 {activeDate}
+                <button
+                  onClick={handleClearDate}
+                  style={{ border: "none", background: "none", cursor: "pointer", color: "#6b7280", fontSize: 13, lineHeight: 1, padding: 0 }}
+                >×</button>
+              </span>
+            )}
           </div>
         </div>
 
@@ -460,11 +505,7 @@ export default function AllBookings() {
             {paginated.length === 0 ? (
               <div style={{ padding: 36, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>No bookings found.</div>
             ) : paginated.map((b, i) => (
-              <div key={i} style={{
-                background: "#fafafa", border: "1px solid #f0f0f0",
-                borderRadius: 10, padding: 14, marginBottom: 12,
-              }}>
-                {/* Card header */}
+              <div key={i} style={{ background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 10, padding: 14, marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{b.id}</div>
@@ -472,8 +513,6 @@ export default function AllBookings() {
                   </div>
                   <OrderBadge status={b.orderStatus} />
                 </div>
-
-                {/* Card body */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", marginBottom: 10 }}>
                   {[
                     { label: "Customer", value: b.customer },
@@ -487,8 +526,6 @@ export default function AllBookings() {
                     </div>
                   ))}
                 </div>
-
-                {/* Card footer */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid #f0f0f0" }}>
                   <PaymentBadge status={b.payment} />
                   <button
@@ -502,7 +539,6 @@ export default function AllBookings() {
             ))}
           </div>
         ) : (
-          /* ── DESKTOP: original table, zero changes ── */
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid #f3f4f6" }}>
@@ -544,7 +580,7 @@ export default function AllBookings() {
           </table>
         )}
 
-        {/* Pagination — original, zero changes */}
+        {/* Pagination */}
         <div style={{
           padding: "12px 20px", borderTop: "1px solid #f3f4f6",
           display: "flex", justifyContent: "flex-end", alignItems: "center",
